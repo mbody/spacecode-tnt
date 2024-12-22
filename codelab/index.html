@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Space Code Lab</title>
+    <link href="./css/icon.css" rel="stylesheet" />
+    <link href="./css/modal.css" rel="stylesheet" />
+    <link href="./css/menu.css" rel="stylesheet" />
+    <link href="./css/tooltip.css" rel="stylesheet" />
+    <link href="./css/style.css" rel="stylesheet" />
+    <script src="./node_modules/socket.io/client-dist/socket.io.min.js"></script>
+    <script src="./node_modules/blockly/blockly_compressed.js"></script>
+    <script src="./node_modules/blockly/blocks_compressed.js"></script>
+    <script src="./node_modules/blockly/javascript_compressed.js"></script>
+    <script src="./node_modules/@blockly/field-colour/dist/index.js"></script>
+    <script src="./node_modules/blockly/msg/fr.js"></script>
+    <script src="./node_modules/blockly-field-color-wheel/dist/index.js"></script>
+  </head>
+  <body>
+    <div class="page-container">
+      <div class="toolbar menu" aria-role="banner">
+        <div class="btnGroup">
+          <div class="logo">
+            <span class="material-icons"> rocket_launch </span>
+            MGEN LAB
+          </div>
+          <button id="refresh-btn" class="btn" onclick="resetWorkspace()">
+            <span class="material-icons" id="refresh-btn-icon">refresh</span>
+          </button>
+        </div>
+        <div class="btnGroup">
+          <button id="run-btn" class="btn">
+            <span class="material-icons" id="run-btn-icon">play_arrow</span>
+          </button>
+        </div>
+      </div>
+      <div id="blocklyArea"></div>
+    </div>
+
+    <div id="blocklyDiv" style="position: absolute"></div>
+
+    <div id="loginModal" class="modal">
+      <form
+        class="modal-content animate"
+        onsubmit="event.preventDefault(); doSendCode();"
+      >
+        <div class="imgcontainer">
+          <span onclick="hideLoginModal()" class="close" title="Close Modal"
+            >&times;</span
+          >
+          <span class="material-icons" id="rocket"> rocket_launch </span>
+        </div>
+
+        <div class="container">
+          <label><b>Pseudo</b></label>
+          <input
+            type="text"
+            placeholder="Votre pseudo"
+            name="username"
+            id="username"
+            required
+          />
+
+          <label><b>Téléphone</b></label>
+          <input
+            type="tel"
+            id="phone"
+            name="phone"
+            placeholder="Votre 06 (ou 07 ;-)"
+            pattern="[0-9]{10}"
+            required
+          />
+
+          <label><b>Couleur de vaisseau</b></label
+          ><br />
+          <input type="color" id="color" name="color" value="#f6b73c" />
+
+          <button type="submit" id="send-btn">Envoyer</button>
+        </div>
+      </form>
+    </div>
+
+    <script src="./js/constantes.js"></script>
+    <script src="./js/GamepadAPI.js"></script>
+    <script src="./js/spacecode-client.js"></script>
+    <script src="./js/spacecode-blocks.js"></script>
+    <script src="./js/eventListeners.js"></script>
+    <script src="./js/demo-basic.js"></script>
+    <script src="./js/main.js"></script>
+  </body>
+</html>

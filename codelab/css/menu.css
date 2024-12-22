@@ -1,0 +1,20 @@
+.submenu {
+  display: none;
+  box-shadow: 0px 1px 2px #ccc;
+  background-color: #6aa618;
+  position: absolute;
+  top: 30px;
+  z-index: 1000;
+  min-width: 200px;
+}
+.menu button:hover + .submenu,
+.submenu:hover {
+  display: block;
+}
+
+.submenu .btn {
+  padding: 10px 20px;
+  width: 100%;
+  text-align: left;
+  margin: 0;
+}

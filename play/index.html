@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Space Code Lab</title>
+    <link href="../codelab/css/icon.css" rel="stylesheet" />
+    <link href="../codelab/css/style.css" rel="stylesheet" />
+    <script src="../codelab/node_modules/socket.io/client-dist/socket.io.min.js"></script>
+  </head>
+  <body>
+    <div class="toolbar menu" aria-role="banner">
+      <div class="btnGroup">
+        <div class="logo">
+          <span class="material-icons"> rocket_launch </span>
+          SPACECODE LAB
+        </div>
+        <input id="username" type="text" placeholder="Votre nom" value=""/>
+      </div>
+      <div class="btnGroup">
+        <button id="run-btn" class="btn" onclick="start()">
+          <span class="material-icons" id="run-btn-icon">play_arrow</span>
+        </button>
+      </div>
+    </div>
+    <div id="blocklyArea"></div>
+  </div>
+
+    <script src="./js/joystick-controller.min.js"></script>
+    <script src="../codelab/js/constantes.js"></script>
+    <script src="../codelab/js/GamepadAPI.js"></script>
+    <script src="../codelab/js/spacecode-client.js"></script>
+    <script src="./js/main.js"></script>
+  </body>
+</html>
