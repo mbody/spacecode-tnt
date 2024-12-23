@@ -1,8 +1,3 @@
-const SCREEN = {
-  width: 3556, //(2000 * 16) / 9,
-  height: 2000
-}
-
 class Utils {
   static degToRad(deg) {
     return deg * (Math.PI / 180)
@@ -28,7 +23,7 @@ class Utils {
 
 // hack for back
 if (typeof window === 'undefined') {
-  module.exports = { SCREEN, Utils }
+  module.exports = { Utils }
 } else {
   module = {}
 }

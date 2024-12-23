@@ -112,7 +112,7 @@ Blockly.common.defineBlocksWithJsonArray([
         type: 'field_dropdown',
         name: 'EVENT',
         options: [
-          ['détecté', 'DETECTED'],
+          ['détecté par adversaire', 'DETECTED'],
           ['adversaire détruit', 'PLAYER_KILLED']
         ]
       },

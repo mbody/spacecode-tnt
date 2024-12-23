@@ -5,23 +5,41 @@ const DEMO_BASIC = {
       {
         type: 'spacecode_loop',
         id: 'wjRQUj@z_Q8aH:f:Qhce',
-        x: 20,
-        y: 20,
+        x: 76,
+        y: -39,
         inputs: {
           CONTENT: {
             block: {
               type: 'spacecode_move',
-              id: 'cJ:]|/S$Ems)I{e)2S?O',
+              id: 'b{tEN+eIgCslUr8GS:wT',
               fields: { DIRECTION: 'forward' },
+              inputs: {
+                VALUE: {
+                  shadow: {
+                    type: 'math_number',
+                    id: '^Td[egVj!n+doNjx:asJ',
+                    fields: { NUM: 5 }
+                  }
+                }
+              },
               next: {
                 block: {
                   type: 'spacecode_turn',
-                  id: '}ntlU;|FL{vL%n$`ZR#/',
-                  fields: { DIRECTION: 'left' },
+                  id: 'XQ{JpPZuAI{Up6z`7*ct',
+                  fields: { DIRECTION: 'right' },
+                  inputs: {
+                    VALUE: {
+                      shadow: {
+                        type: 'math_number',
+                        id: '8H~)}ZQi%{c.fCi5w}`;',
+                        fields: { NUM: 5 }
+                      }
+                    }
+                  },
                   next: {
                     block: {
                       type: 'spacecode_shoot',
-                      id: 'tmcU41zxS7H;!F;6E,V='
+                      id: '6I|Z?TCbz^h.Cu{8P$)5'
                     }
                   }
                 }

@@ -163,10 +163,14 @@ socket.on('updatePlayers', (backEndPlayers) => {
       frontEndPlayers[id].updateFromBackend(backEndPlayer)
 
       let lives = ''
-      for (let index = 0; index < backEndPlayer.lives; index++) {
-        lives += `<span style="color: red">	&#x2665;</span>`
+      for (let index = 0; index < NB_MAX_LIVES; index++) {
+        if (index < backEndPlayer.lives) {
+          lives += `<span style="color: ${backEndPlayer.color}">	&#x2665;</span>`
+        } else {
+          lives += `<span style="color: black">	&#x2665;</span>`
+        }
       }
-      div.innerHTML = `<span style="color:${backEndPlayer.color}">	&#x25CF;</span> ${backEndPlayer.username} ${lives} : ${backEndPlayer.score} `
+      div.innerHTML = `${lives} ${backEndPlayer.username}  : ${backEndPlayer.score} `
 
       div.setAttribute('data-score', backEndPlayer.score)
       div.addEventListener('click', () => copyToClipboard('${id}'))
