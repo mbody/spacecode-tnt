@@ -18,22 +18,18 @@ Blockly.defineBlocksWithJsonArray([
   }
 ])
 
-INPUT_COLOR = 210
+INPUT_COLOR = 120
 ACTION_COLOR = 285
 LOGIC_COLOR = 165
 BLOCK_COLOR = 285
+VALUE_COLOR = 60
 
 Blockly.common.defineBlocksWithJsonArray([
   {
     type: 'spacecode_turn',
     tooltip: 'Faire tourner le vaisseau',
-    message0: 'Tourner de %1°  à %2 %3',
+    message0: 'Tourner à %1 de %2 °',
     args0: [
-      {
-        type: 'field_number',
-        name: 'ANGLE',
-        value: 5
-      },
       {
         type: 'field_dropdown',
         name: 'DIRECTION',
@@ -43,8 +39,11 @@ Blockly.common.defineBlocksWithJsonArray([
         ]
       },
       {
-        type: 'input_dummy',
-        name: 'NAME'
+        type: 'input_value',
+        name: 'VALUE',
+        check: 'Number',
+        min: -20,
+        max: 20
       }
     ],
     previousStatement: null,
@@ -54,13 +53,8 @@ Blockly.common.defineBlocksWithJsonArray([
   {
     type: 'spacecode_move',
     tooltip: 'Avance ou recule le vaisseau',
-    message0: 'Déplacer le vaisseau de %1 vers %2 %3',
+    message0: 'Déplacer vers %1 de %2',
     args0: [
-      {
-        type: 'field_number',
-        name: 'DISTANCE',
-        value: 5
-      },
       {
         type: 'field_dropdown',
         name: 'DIRECTION',
@@ -70,8 +64,11 @@ Blockly.common.defineBlocksWithJsonArray([
         ]
       },
       {
-        type: 'input_dummy',
-        name: 'NAME'
+        type: 'input_value',
+        name: 'VALUE',
+        chack: 'Number',
+        min: -50,
+        max: 50
       }
     ],
     previousStatement: null,
@@ -106,6 +103,28 @@ Blockly.common.defineBlocksWithJsonArray([
     colour: INPUT_COLOR
   },
   {
+    type: 'spacecode_handler',
+    tooltip: "S'exécute si l'évènement se produit",
+    helpUrl: '',
+    message0: 'Lorsque %1 %2',
+    args0: [
+      {
+        type: 'field_dropdown',
+        name: 'EVENT',
+        options: [
+          ['détecté', 'DETECTED'],
+          ['adversaire détruit', 'PLAYER_KILLED']
+        ]
+      },
+      {
+        type: 'input_statement',
+        name: 'CONTENT'
+      }
+    ],
+    colour: INPUT_COLOR
+  },
+
+  {
     type: 'spacecode_shoot',
     tooltip: '',
     helpUrl: '',
@@ -119,6 +138,28 @@ Blockly.common.defineBlocksWithJsonArray([
     previousStatement: null,
     nextStatement: null,
     colour: BLOCK_COLOR
+  },
+  {
+    type: 'spacecode_screen',
+    tooltip: '',
+    helpUrl: '',
+    message0: 'écran %1 %2',
+    args0: [
+      {
+        type: 'field_dropdown',
+        name: 'ATTRIBUTE',
+        options: [
+          ['largeur', 'width'],
+          ['hauteur', 'height']
+        ]
+      },
+      {
+        type: 'input_dummy',
+        name: 'NAME'
+      }
+    ],
+    output: null,
+    colour: VALUE_COLOR
   },
   {
     type: 'spacecode_orientTo',
@@ -246,13 +287,13 @@ Blockly.common.defineBlocksWithJsonArray([
       }
     ],
     output: 'Number',
-    colour: BLOCK_COLOR
+    colour: VALUE_COLOR
   },
   {
     type: 'spacecode_setAttribute',
     tooltip: "Définir l'attribut du vasseau",
     helpUrl: '',
-    message0: 'Définir %1 %2 %3',
+    message0: 'Définir %1 à %2',
     args0: [
       {
         type: 'field_dropdown',
@@ -264,13 +305,8 @@ Blockly.common.defineBlocksWithJsonArray([
         ]
       },
       {
-        type: 'field_label_serializable',
-        text: 'à',
-        name: 'NAME'
-      },
-      {
         type: 'input_value',
-        name: 'NAME',
+        name: 'VALUE',
         check: 'Number'
       }
     ],
@@ -292,19 +328,37 @@ Blockly.common.defineBlocksWithJsonArray([
     ],
     output: 'Sprite',
     colour: 225
+  },
+  {
+    type: 'spacecode_scan',
+    tooltip: '',
+    helpUrl: '',
+    message0: '%1 %2 détecté',
+    args0: [
+      {
+        type: 'field_dropdown',
+        name: 'TYPE',
+        options: [
+          ['adversaire', 'PLAYER'],
+          ['bonus', 'BONUS']
+        ]
+      },
+      {
+        type: 'input_dummy',
+        name: 'NAME'
+      }
+    ],
+    output: 'Boolean',
+    colour: ACTION_COLOR
   }
 ])
 
-javascript.javascriptGenerator.forBlock['spacecode_connect'] = (block) => {
-  const text_username = block.getFieldValue('USERNAME')
-  const colour_color = block.getFieldValue('COLOR')
-
-  const code = `Spacecode.connect('${text_username}', '${colour_color}')\n`
-  return code
-}
-
 javascript.javascriptGenerator.forBlock['spacecode_turn'] = (block) => {
-  const number_angle = block.getFieldValue('ANGLE')
+  const number_angle = javascript.javascriptGenerator.valueToCode(
+    block,
+    'VALUE',
+    javascript.Order.ATOMIC
+  )
   const dropdown_direction = block.getFieldValue('DIRECTION')
   const method = dropdown_direction === 'left' ? 'turnLeft' : 'turnRight'
   const code = `this.${method}(${number_angle}); `
@@ -312,7 +366,11 @@ javascript.javascriptGenerator.forBlock['spacecode_turn'] = (block) => {
 }
 
 javascript.javascriptGenerator.forBlock['spacecode_move'] = (block) => {
-  const number_distance = block.getFieldValue('DISTANCE')
+  const number_distance = javascript.javascriptGenerator.valueToCode(
+    block,
+    'VALUE',
+    javascript.Order.ATOMIC
+  )
   const dropdown_direction = block.getFieldValue('DIRECTION')
   const method =
     dropdown_direction === 'forward' ? 'moveForward' : 'moveBackward'
@@ -320,16 +378,33 @@ javascript.javascriptGenerator.forBlock['spacecode_move'] = (block) => {
   return code
 }
 
-let LOOP_CREATION_TIMESTAMP = 0
+javascript.javascriptGenerator.forBlock['spacecode_init'] = function (block) {
+  const statement_content = javascript.javascriptGenerator.statementToCode(
+    block,
+    'CONTENT'
+  )
+  const code = `<INIT>() => {try{${statement_content}} catch(e){console.error(e)}};</INIT>`
+  return code
+}
 
 javascript.javascriptGenerator.forBlock['spacecode_loop'] = function (block) {
   const statement_content = javascript.javascriptGenerator.statementToCode(
     block,
     'CONTENT'
   )
+  const code = `<LOOP>() => {try{${statement_content}} catch(e){console.error(e)}};</LOOP>`
+  return code
+}
 
-  LOOP_CREATION_TIMESTAMP = Date.now()
-  const code = `() => {try{${statement_content}} catch(e){console.error(e)}};`
+javascript.javascriptGenerator.forBlock['spacecode_handler'] = function (
+  block
+) {
+  const dropdown_event = block.getFieldValue('EVENT')
+  const statement_content = javascript.javascriptGenerator.statementToCode(
+    block,
+    'CONTENT'
+  )
+  const code = `<${dropdown_event}>() => {try{${statement_content}} catch(e){console.error(e)}};</${dropdown_event}>`
   return code
 }
 
@@ -338,7 +413,17 @@ javascript.javascriptGenerator.forBlock['spacecode_shoot'] = function (block) {
   return code
 }
 
-javascript.javascriptGenerator.forBlock['spacecode_orientTo'] = function (
+javascript.javascriptGenerator.forBlock['spacecode_scan'] = function (block) {
+  const dropdown_object = block.getFieldValue('TYPE')
+  let type = ''
+  switch (dropdown_object) {
+    case '':
+  }
+  const code = `this.scan(${type})`
+  return [code, javascript.Order.NONE]
+}
+
+javascript.javascriptGenerator.forBlock['spacecode_turnToward'] = function (
   block
 ) {
   const value_sprite = javascript.javascriptGenerator.valueToCode(
@@ -347,7 +432,7 @@ javascript.javascriptGenerator.forBlock['spacecode_orientTo'] = function (
     javascript.Order.ATOMIC
   )
 
-  const code = `Spacecode.orientTo(${value_sprite})\n`
+  const code = `this.turnToward(${value_sprite});`
   return code
 }
 javascript.javascriptGenerator.forBlock['spacecode_getNearestEnemy'] =
@@ -377,10 +462,24 @@ javascript.javascriptGenerator.forBlock['spacecode_setAttribute'] = function (
   const attribute = block.getFieldValue('ATTRIBUTE')
   const value = javascript.javascriptGenerator.valueToCode(
     block,
-    'NAME',
+    'VALUE',
     javascript.Order.ATOMIC
   )
 
   const code = `this.${attribute}=${value}; `
   return code
+}
+
+javascript.javascriptGenerator.forBlock['spacecode_screen'] = function (block) {
+  const dropdown_attribute = block.getFieldValue('ATTRIBUTE')
+  let code = ''
+  switch (dropdown_attribute) {
+    case 'width':
+      code = SCREEN.width
+      break
+    case 'height':
+      code = SCREEN.height
+      break
+  }
+  return [code, javascript.Order.NONE]
 }

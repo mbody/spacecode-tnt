@@ -1,5 +1,5 @@
 const SCREEN = {
-  width: (2000 * 16) / 9,
+  width: 3556, //(2000 * 16) / 9,
   height: 2000
 }
 
@@ -13,6 +13,16 @@ class Utils {
 
   static getRandomColor() {
     return `hsl(${360 * Math.random()}, 100%, 50%)`
+  }
+
+  static constrainMinMax(value, min, max) {
+    if (value < min) {
+      value = min
+    } else if (value > max) {
+      value = max
+    }
+
+    return value
   }
 }
 

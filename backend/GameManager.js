@@ -19,7 +19,7 @@ class GameManager {
     NetworkManager.io.on('connection', this.onConnection)
     NetworkManager.registerPostEndpoint('/player', this.onNewBotPlayer)
     // backend ticker
-    setInterval(this.loop, 15)
+    setInterval(this.loop, 1000 / 30)
   }
 
   onConnection = (socket) => {
@@ -108,13 +108,11 @@ class GameManager {
   }
 
   onNewPlayer = (playerId, { username, color, code }) => {
-    const onUpdate = eval(code)
-
     PlayerManager.createNewPlayer({
       id: playerId,
       color,
       username,
-      onUpdate: code
+      code
     })
   }
 

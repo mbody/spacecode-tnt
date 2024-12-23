@@ -39,6 +39,44 @@ class PlayerManager {
         }
       }
 
+      // Collision detection with projectiles
+      if (!player.invicible && player.alive) {
+        for (const projectileId in backEndProjectiles) {
+          const projectile = backEndProjectiles[projectileId]
+          if (player.isHitBy(projectile) && projectile.playerId != player.id) {
+            // Player hit
+            PlayerManager.onPlayerDie({ player })
+            const shooter = backEndPlayers[projectile.playerId]
+
+            if (shooter) {
+              shooter.score++
+              shooter.onPlayerKilled()
+            }
+
+            break
+          }
+        }
+      }
+
+      // Collision detection with enemies
+      if (!player.invicible) {
+        for (const enemyId in backEndEnemies) {
+          const enemy = backEndEnemies[enemyId]
+          if (player.isHitBy(enemy)) {
+            // Player hit
+            PlayerManager.onPlayerDie({ player })
+
+            /*
+              if (PlayerManager.hasNoMorePlayer()) {
+              //return false
+              return true
+            }
+              */
+            break
+          }
+        }
+      }
+
       // Collision avec bonus
       if (player.alive) {
         for (const bonusId in backEndBonuses) {

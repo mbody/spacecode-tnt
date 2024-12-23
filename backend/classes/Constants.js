@@ -1,6 +1,6 @@
 const CONSTANTES = {
   SCREEN: {
-    width: (2000 * 16) / 9,
+    width: 3556, //(2000 * 16) / 9,
     height: 2000
   },
   // PROJECTILES
@@ -14,6 +14,8 @@ const CONSTANTES = {
   PLAYER_RESPAWN_DELAY: 5000,
   PLAYER_INVICIBLE_DELAY: 3000,
   SHOOT_INTERVAL: 500,
+  PLAYER_MAX_ROTATION: 10,
+  PLAYER_MAX_SPEED: 30,
   // ENEMY
   ENEMY_RADIUS: 25, // has to match enemy.svg file size /2 !
   LEVEL_PROGRESS_PER_KILL: 0, //0.1,

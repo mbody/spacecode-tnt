@@ -14,7 +14,7 @@ const {
 const { BonusManager } = require('./BonusManager')
 
 class EnemyManager {
-  static currentLevel = 2
+  static currentLevel = 0
   static enemyId = 0
 
   static updateEnemies() {

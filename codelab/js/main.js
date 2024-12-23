@@ -25,11 +25,31 @@ var toolbox = {
   contents: [
     {
       kind: 'category',
-      name: 'Entrée',
+      name: 'Base',
       categorystyle: 'input_category',
       contents: [
         { kind: 'block', type: 'spacecode_init' },
-        { kind: 'block', type: 'spacecode_loop' }
+        { kind: 'block', type: 'spacecode_loop' },
+        { kind: 'block', type: 'spacecode_screen' },
+        {
+          kind: 'block',
+          type: 'spacecode_getAttribute'
+        },
+        {
+          kind: 'block',
+          type: 'spacecode_setAttribute',
+          inputs: {
+            VALUE: {
+              shadow: {
+                type: 'math_number',
+                fields: {
+                  NUM: 0
+                }
+              }
+            }
+          }
+        },
+        { kind: 'block', type: 'spacecode_handler' }
       ]
     },
     {
@@ -37,9 +57,36 @@ var toolbox = {
       name: 'Actions',
       categorystyle: 'action_category',
       contents: [
-        { kind: 'block', type: 'spacecode_move' },
-        { kind: 'block', type: 'spacecode_turn' },
-        { kind: 'block', type: 'spacecode_shoot' }
+        {
+          kind: 'block',
+          type: 'spacecode_move',
+          inputs: {
+            VALUE: {
+              shadow: {
+                type: 'math_number',
+                fields: {
+                  NUM: 5
+                }
+              }
+            }
+          }
+        },
+        {
+          kind: 'block',
+          type: 'spacecode_turn',
+          inputs: {
+            VALUE: {
+              shadow: {
+                type: 'math_number',
+                fields: {
+                  NUM: 5
+                }
+              }
+            }
+          }
+        },
+        { kind: 'block', type: 'spacecode_shoot' },
+        { kind: 'block', type: 'spacecode_scan' }
       ]
     },
     {
@@ -71,31 +118,6 @@ var toolbox = {
     },
     {
       kind: 'category',
-      name: 'Boucles',
-      categorystyle: 'loop_category',
-      contents: [
-        {
-          kind: 'block',
-          type: 'controls_repeat_ext',
-          inputs: {
-            TIMES: {
-              block: {
-                type: 'math_number',
-                fields: {
-                  NUM: 10
-                }
-              }
-            }
-          }
-        },
-        {
-          kind: 'block',
-          type: 'controls_whileUntil'
-        }
-      ]
-    },
-    {
-      kind: 'category',
       name: 'Math',
       categorystyle: 'math_category',
       contents: [
@@ -108,108 +130,61 @@ var toolbox = {
         },
         {
           kind: 'block',
-          type: 'math_arithmetic'
+          type: 'math_arithmetic',
+          inputs: {
+            A: {
+              shadow: {
+                type: 'math_number',
+                fields: {
+                  NUM: 1
+                }
+              }
+            },
+            B: {
+              shadow: {
+                type: 'math_number',
+                fields: {
+                  NUM: 1
+                }
+              }
+            }
+          }
         },
         {
           kind: 'block',
-          type: 'math_single'
-        }
-      ]
-    },
-    {
-      kind: 'category',
-      name: 'Text',
-      categorystyle: 'text_category',
-      contents: [
-        {
-          kind: 'block',
-          type: 'text'
+          type: 'math_single',
+          inputs: {
+            NUM: {
+              shadow: {
+                type: 'math_number',
+                fields: {
+                  NUM: 0
+                }
+              }
+            }
+          }
         },
         {
           kind: 'block',
-          type: 'text_length'
-        },
-        {
-          kind: 'block',
-          type: 'text_print'
-        }
-      ]
-    },
-    {
-      kind: 'sep'
-    },
-
-    {
-      kind: 'category',
-      name: 'Variables',
-      categorystyle: 'variable_category',
-      custom: 'VARIABLE'
-    },
-    {
-      kind: 'category',
-      name: 'Fonctions',
-      categorystyle: 'procedure_category',
-      custom: 'PROCEDURE'
-    },
-    {
-      kind: 'sep'
-    },
-
-    {
-      kind: 'category',
-      name: 'Entrées',
-      categorystyle: 'input_category',
-      contents: [
-        {
-          kind: 'block',
-          type: 'spacecode_isKeyPressed'
-        },
-        {
-          kind: 'block',
-          type: 'spacecode_isGamepadButtonPressed'
-        },
-        {
-          kind: 'block',
-          type: 'spacecode_isGamepadJoystickPointing'
-        }
-      ]
-    },
-    {
-      kind: 'category',
-      name: 'Space Code',
-      categorystyle: 'spacecode_category',
-      contents: [
-        {
-          kind: 'block',
-          type: 'spacecode_move'
-        },
-        {
-          kind: 'block',
-          type: 'spacecode_turn'
-        },
-        {
-          kind: 'block',
-          type: 'spacecode_loop'
-        },
-        {
-          kind: 'block',
-          type: 'spacecode_shoot'
-        },
-        {
-          kind: 'block',
-          type: 'spacecode_getNearestEnemy'
-        },
-        {
-          kind: 'block',
-          type: 'spacecode_orientTo'
-        },
-        {
-          kind: 'block',
-          type: 'spacecode_getAttribute'
-        },
-        {
-          kind: 'block',
-          type: 'spacecode_setAttribute'
+          type: 'math_random_int',
+          inputs: {
+            FROM: {
+              shadow: {
+                type: 'math_number',
+                fields: {
+                  NUM: 0
+                }
+              }
+            },
+            TO: {
+              shadow: {
+                type: 'math_number',
+                fields: {
+                  NUM: 10
+                }
+              }
+            }
+          }
         }
       ]
     }
