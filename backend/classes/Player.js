@@ -61,11 +61,12 @@ class Player extends GameObject {
   }
 
   moveForward(speed = PLAYER_SPEED) {
+    speed = Utils.constrainMinMax(speed, -PLAYER_MAX_SPEED, PLAYER_MAX_SPEED)
     this.x += Math.sin(Utils.degToRad(this.rotation)) * speed
     this.y -= Math.cos(Utils.degToRad(this.rotation)) * speed
   }
   moveBackward(speed = PLAYER_SPEED) {
-    speed = Utils.constrainMinMax(rotation, -PLAYER_MAX_SPEED, PLAYER_MAX_SPEED)
+    speed = Utils.constrainMinMax(speed, -PLAYER_MAX_SPEED, PLAYER_MAX_SPEED)
     this.x -= Math.sin(Utils.degToRad(this.rotation)) * speed
     this.y += Math.cos(Utils.degToRad(this.rotation)) * speed
   }
