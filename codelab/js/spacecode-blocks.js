@@ -278,7 +278,7 @@ Blockly.common.defineBlocksWithJsonArray([
         options: [
           ['x', 'x'],
           ['y', 'y'],
-          ['rotation', 'rotation']
+          ['orientation', 'rotation']
         ]
       },
       {
@@ -414,12 +414,8 @@ javascript.javascriptGenerator.forBlock['spacecode_shoot'] = function (block) {
 }
 
 javascript.javascriptGenerator.forBlock['spacecode_scan'] = function (block) {
-  const dropdown_object = block.getFieldValue('TYPE')
-  let type = ''
-  switch (dropdown_object) {
-    case '':
-  }
-  const code = `this.scan(${type})`
+  const type = block.getFieldValue('TYPE')
+  const code = `this.scan('${type}')`
   return [code, javascript.Order.NONE]
 }
 

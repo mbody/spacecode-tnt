@@ -90,6 +90,7 @@ function doSendCode() {
     code //: '() => { this.moveForward();  this.turnLeft() ; this.shoot() }'
   }
   xhr.send(JSON.stringify(data))
+  hideLoginModal()
 }
 
 /// LOCAL STORAGE

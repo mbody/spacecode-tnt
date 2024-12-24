@@ -40,7 +40,7 @@ class NetworkManager {
 
     server.listen(port, '0.0.0.0', () => {
       console.log(
-        `Spacecode server listening on port ${port}... \nOpen http://localhost:3000 to display the game`
+        `Spacecode server listening on port ${port}... \nOpen http://localhost:${port} to display the game`
       )
     })
   }

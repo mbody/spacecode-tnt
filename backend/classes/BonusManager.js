@@ -1,6 +1,10 @@
 const { Enemy } = require('./Enemy')
-const { SCREEN } = require('../../frontend/js/classes/Utils')
-const { backEndEnemies, backEndBonuses } = require('./SharedModel')
+const { SCREEN, BONUS_PLAYER_RATIO } = require('./Constants')
+const {
+  backEndEnemies,
+  backEndBonuses,
+  backEndPlayers
+} = require('./SharedModel')
 const NetworkManager = require('./NetworkManager')
 const {
   ENEMY_RADIUS,
@@ -8,36 +12,25 @@ const {
   BONUS_RADIUS,
   BONUS_SPEED
 } = require('./Constants')
-const { Bonus } = require('./Bonus')
+const { Bonus, BonusType } = require('./Bonus')
 
 class BonusManager {
   static bonusesId = 0
 
   static updateBonuses() {
-    for (const bonusId in backEndBonuses) {
-      const bonus = backEndBonuses[bonusId]
-      // update position
-      bonus.update()
-      if (bonus.isOutside()) {
-        bonus.bounce()
-      }
+    // always at least 1 bonus for n players
+    let nbBonuses = Object.keys(backEndBonuses).length
+    const nbPlayers = Object.keys(backEndPlayers).length
+    while (nbBonuses < Math.ceil(nbPlayers / BONUS_PLAYER_RATIO)) {
+      BonusManager.createNewBonus()
+      nbBonuses++
     }
   }
 
-  static createNewBonus({ x, y }) {
-    const angle = Math.random() * 360
-
-    const velocity = {
-      x: Math.cos(angle) * BONUS_SPEED,
-      y: Math.sin(angle) * BONUS_SPEED
-    }
-
-    backEndBonuses[this.bonusesId++] = new Bonus({
-      x,
-      y,
-      radius: BONUS_RADIUS,
-      velocity
-    })
+  static createNewBonus() {
+    const types = Object.values(BonusType)
+    const type = types[Math.floor(Math.random() * types.length)]
+    backEndBonuses[this.bonusesId++] = new Bonus(type)
   }
 
   static resetAllBonuses() {

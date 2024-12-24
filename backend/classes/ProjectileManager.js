@@ -1,4 +1,3 @@
-const { SCREEN } = require('../../frontend/js/classes/Utils')
 const { PROJECTILE_RADIUS, PROJECTILE_SPEED } = require('./Constants')
 const { Projectile } = require('./Projectile')
 const {

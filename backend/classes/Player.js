@@ -1,4 +1,5 @@
 const { Utils } = require('../../frontend/js/classes/Utils')
+const { BonusType } = require('./Bonus')
 const {
   SCREEN,
   PLAYER_SPEED,
@@ -11,11 +12,12 @@ const {
   BONUS_SCORE,
   PLAYER_LIVES,
   PLAYER_MAX_ROTATION,
-  PLAYER_MAX_SPEED
+  PLAYER_MAX_SPEED,
+  PLAYER_SCAN_DISTANCE
 } = require('./Constants')
 const { GameObject } = require('./GameObject')
 const { ProjectileManager } = require('./ProjectileManager')
-const { backEndPlayers } = require('./SharedModel')
+const { backEndPlayers, backEndBonuses } = require('./SharedModel')
 
 function mathRandomInt(a = 0, b = 100) {
   return Math.floor(Math.random() * (b - a) + a)
@@ -135,9 +137,23 @@ class Player extends GameObject {
     this.invicible = true
   }
 
-  collectBonus() {
-    this.score += BONUS_SCORE
-    this.respawn()
+  collectBonus(bonus) {
+    switch (bonus.type) {
+      case BonusType.CRYSTAL:
+        this.score += BONUS_SCORE
+        break
+      case BonusType.SHIELD:
+        this.invicible = true
+        setTimeout(() => {
+          this.invicible = false
+        }, PLAYER_INVICIBLE_DELAY)
+        break
+      case BonusType.HEART:
+        if (this.lives < PLAYER_LIVES) {
+          this.lives++
+        }
+        break
+    }
   }
 
   respawn = () => {
@@ -171,18 +187,25 @@ class Player extends GameObject {
   }
 
   scan = (type = 'PLAYER') => {
-    const sprites = Object.values(backEndPlayers)
-    for (const player of sprites) {
-      if (!player.alive) continue
-      const dx = player.x - this.x
-      const dy = player.y - this.y
+    let sprites = Object.values(backEndPlayers)
+    switch (type) {
+      case 'BONUS':
+        sprites = Object.values(backEndBonuses)
+        break
+      case 'PLAYER':
+      // nothing
+    }
+    for (const sprite of sprites) {
+      if (sprite instanceof Player && !sprite.alive) continue
+      const dx = sprite.x - this.x
+      const dy = sprite.y - this.y
       if (dx == 0 && dy == 0) continue
       const angleTo = 90 + (180 * Math.atan2(dy, dx)) / Math.PI
       const da = Math.abs((this.rotation - angleTo) % 360)
       if (Math.abs(da) < 10) {
         const distance2 = dx * dx + dy * dy
-        if (distance2 < 300000) {
-          player.onDetected()
+        if (distance2 < PLAYER_SCAN_DISTANCE) {
+          sprite instanceof Player && sprite.onDetected()
           return true
         }
       }

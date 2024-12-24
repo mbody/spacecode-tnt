@@ -1,4 +1,4 @@
-const { SCREEN } = require('../../frontend/js/classes/Utils')
+const { SCREEN } = require('../../frontend/js/classes/Constantes')
 const NetworkManager = require('./NetworkManager')
 const { Player } = require('./Player')
 const {

@@ -1,10 +1,9 @@
-class Player {
+class Player extends GameObject {
   HEIGHT = 30
   WIDTH = 8
 
-  constructor({ x, y, rotation, color, username, invicible, alive, lives }) {
-    this.x = x
-    this.y = y
+  constructor({ rotation, username, invicible, alive, color, lives, ...data }) {
+    super(data)
     this.rotation = rotation
     this.color = color
     this.originalColor = color
@@ -30,6 +29,12 @@ class Player {
       if (this.invicible) {
         const blink = Math.floor(Date.now() / 500.0) % 2 == 0
         this.color = blink ? 'white' : this.originalColor
+        c.beginPath()
+        c.arc(this.x, this.y, this.radius * 2, 0, Math.PI * 2, false)
+        c.strokeStyle = '#6AA710'
+        c.shadowColor = '#6AA710'
+        c.shadowBlur = 20
+        c.stroke()
       }
 
       c.font = '12px sans-serif'

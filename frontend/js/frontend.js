@@ -1,6 +1,27 @@
 const canvas = document.querySelector('#gameboard')
 const c = canvas.getContext('2d')
 
+const socket = io()
+
+const devicePixelRatio = window.devicePixelRatio || 1
+
+canvas.width = SCREEN.width * devicePixelRatio
+canvas.height = SCREEN.height * devicePixelRatio
+
+c.scale(devicePixelRatio, devicePixelRatio)
+
+const x = canvas.width / 2
+const y = canvas.height / 2
+
+const frontEndPlayers = {}
+const frontEndProjectiles = {}
+const frontEndEnemies = {}
+const frontEndBonuses = {}
+const particles = []
+
+const background = new Background(SCREEN)
+
+// handle window resize
 window.addEventListener(
   'load',
   function () {
@@ -26,8 +47,8 @@ function fullscreenify(canvas) {
 
   function resize(canvas) {
     s = Math.min(
-      window.innerWidth / SCREEN.width,
-      window.innerHeight / SCREEN.height
+      window.innerWidth / devicePixelRatio / SCREEN.width,
+      window.innerHeight / devicePixelRatio / SCREEN.height
     )
 
     var scale = s + ',' + s
@@ -50,26 +71,6 @@ function fullscreenify(canvas) {
     )
   }
 }
-
-const socket = io()
-
-const devicePixelRatio = window.devicePixelRatio || 1
-
-canvas.width = SCREEN.width * devicePixelRatio
-canvas.height = SCREEN.height * devicePixelRatio
-
-c.scale(devicePixelRatio, devicePixelRatio)
-
-const x = canvas.width / 2
-const y = canvas.height / 2
-
-const frontEndPlayers = {}
-const frontEndProjectiles = {}
-const frontEndEnemies = {}
-const frontEndBonuses = {}
-const particles = []
-
-const background = new Background(SCREEN)
 
 socket.emit(
   'initDisplay',
@@ -151,14 +152,14 @@ socket.on('updateBonuses', (backEndBonuses) => {
 socket.on('updatePlayers', (backEndPlayers) => {
   for (const id in backEndPlayers) {
     const backEndPlayer = backEndPlayers[id]
-    const div = document.querySelector(`div[data-id="${id}"]`)
+    const div = document.querySelector(`tr[data-id="${id}"]`)
 
     if (!frontEndPlayers[id] || !div) {
       frontEndPlayers[id] = new Player(backEndPlayer)
 
       document.querySelector(
         '#playerLabels'
-      ).innerHTML += `<div data-id="${id}" data-score="${backEndPlayer.score}">${backEndPlayer.username}: ${backEndPlayer.score}</div>`
+      ).innerHTML += `<tr onclick="copyToClipboard('${id}')" data-id="${id}" data-score="${backEndPlayer.score}"><td></th><td>${backEndPlayer.username}</th><td> ${backEndPlayer.score}</th></tr>`
     } else {
       frontEndPlayers[id].updateFromBackend(backEndPlayer)
 
@@ -170,14 +171,13 @@ socket.on('updatePlayers', (backEndPlayers) => {
           lives += `<span style="color: black">	&#x2665;</span>`
         }
       }
-      div.innerHTML = `${lives} ${backEndPlayer.username}  : ${backEndPlayer.score} `
+      div.innerHTML = `<th style="text-align: left"> ${backEndPlayer.username}</th><td style="padding:0 5px">${lives}</th><td>${backEndPlayer.score} </th>`
 
       div.setAttribute('data-score', backEndPlayer.score)
-      div.addEventListener('click', () => copyToClipboard('${id}'))
 
       // sorts the players divs
       const parentDiv = document.querySelector('#playerLabels')
-      const childDivs = Array.from(parentDiv.querySelectorAll('div'))
+      const childDivs = Array.from(parentDiv.querySelectorAll('tr'))
 
       childDivs.sort((a, b) => {
         const scoreA = Number(a.getAttribute('data-score'))

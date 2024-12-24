@@ -6,7 +6,7 @@
         -moz-osx-font-smoothing: grayscale;
         text-rendering: optimizeLegibility;
         margin: 0;
-        background: #1b4075;
+        background: #1d1d1d;
         font-family: sans-serif;
         font-size: 14px;
         color: white;
@@ -99,7 +99,9 @@
     <canvas id="gameboard"></canvas>
     <div id="leaderboard">
       <div id="leaderboardTitle">Leaderboard</div>
-      <div id="playerLabels"></div>
+      <table>
+        <tbody id="playerLabels"></tbody>
+      </table>
     </div>
     <div id="serverUrl">localhost</div>
 
@@ -131,8 +133,10 @@
     <script src="./js/classes/Projectile.js"></script>
     <script src="./js/frontend.js"></script>
     <script src="./js/eventListeners.js"></script>
+
     <div class="hidden">
-      <img id="enemy" src="./img/enemy.svg" />
+      <img id="heart" src="./img/heart.svg" />
+      <img id="shield" src="./img/shield.svg" />
       <img id="crystal" src="./img/crystal.svg" />
       <audio id="enemyDie" src="./sounds/enemyDie.mp3" />
       <audio id="playerDie" src="./sounds/playerDie.ogg" />
