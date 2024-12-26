@@ -50,9 +50,9 @@ h1 {
 }
 
 .btn {
-  background-color: transparent;
+  border-radius: 40px;
+  background-color: #447007;
   border: 2px solid transparent;
-  border-radius: 3px;
   color: #ffffff;
   font-family: 'Open Sans', sans-serif;
   font-size: 14px;
@@ -60,6 +60,11 @@ h1 {
   padding: 2px 4px;
   margin: 0 8px;
 }
+
+#account-btn {
+  background-color: black;
+}
+
 .btn:hover {
   background-color: #447007;
 }
@@ -73,6 +78,10 @@ h1 {
   margin: 0px;
   font-size: 36px;
 }
+
+#account-btn {
+}
+
 .hidden {
   display: none;
 }

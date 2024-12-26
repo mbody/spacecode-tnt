@@ -58,20 +58,21 @@ class PlayerManager {
         }
       }
 
-      // Collision detection with enemies
+      // Collision detection between 2 players
       if (!player.invicible) {
-        for (const enemyId in backEndEnemies) {
-          const enemy = backEndEnemies[enemyId]
-          if (player.isHitBy(enemy)) {
-            // Player hit
-            PlayerManager.onPlayerDie({ player })
-
-            /*
-              if (PlayerManager.hasNoMorePlayer()) {
-              //return false
-              return true
+        for (const enemyId in backEndPlayers) {
+          const enemy = backEndPlayers[enemyId]
+          if (id != enemyId && enemy.alive) {
+            if (player.isHitBy(enemy)) {
+              // Player hit
+              PlayerManager.onPlayerDie({ player })
+              if (enemy.invicible) {
+                enemy.score++
+                enemy.onPlayerKilled()
+              } else {
+                PlayerManager.onPlayerDie({ player: enemy })
+              }
             }
-              */
             break
           }
         }

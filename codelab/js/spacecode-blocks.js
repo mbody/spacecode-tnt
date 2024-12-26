@@ -24,6 +24,12 @@ LOGIC_COLOR = 165
 BLOCK_COLOR = 285
 VALUE_COLOR = 60
 
+EVENTS = {
+  DETECTED: 'DETECTED',
+  PLAYER_KILLED: 'PLAYER_KILLED',
+  BONUS_COLLECTED: 'BONUS_COLLECTED'
+}
+
 Blockly.common.defineBlocksWithJsonArray([
   {
     type: 'spacecode_turn',
@@ -112,8 +118,9 @@ Blockly.common.defineBlocksWithJsonArray([
         type: 'field_dropdown',
         name: 'EVENT',
         options: [
-          ['détecté par adversaire', 'DETECTED'],
-          ['adversaire détruit', 'PLAYER_KILLED']
+          ['détecté par adversaire', EVENTS.DETECTED],
+          ['adversaire détruit', EVENTS.PLAYER_KILLED],
+          ['Bonus collecté', EVENTS.BONUS_COLLECTED]
         ]
       },
       {
@@ -178,95 +185,6 @@ Blockly.common.defineBlocksWithJsonArray([
     colour: 225
   },
   {
-    type: 'spacecode_orientToNearestEnemy',
-    tooltip: '',
-    helpUrl: '',
-    message0: "S'orienter vers l'ennemi le plus proche %1",
-    args0: [
-      {
-        type: 'input_dummy',
-        name: 'NAME'
-      }
-    ],
-    previousStatement: null,
-    nextStatement: null,
-    colour: BLOCK_COLOR
-  },
-  {
-    type: 'spacecode_isKeyPressed',
-    tooltip:
-      'Retourne true si la touche correspondant au code est enfoncée, false sinon',
-    helpUrl:
-      'https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/keyCode',
-    message0: 'Touche %1 enfoncée %2',
-    args0: [
-      {
-        type: 'field_input',
-        name: 'CODE',
-        text: 'code'
-      },
-      {
-        type: 'input_dummy',
-        name: 'NAME'
-      }
-    ],
-    output: 'Boolean',
-    colour: INPUT_COLOR
-  },
-  {
-    type: 'spacecode_isGamepadButtonPressed',
-    tooltip: 'Retourne true si le bouton B0 à B5 est enfoncé, false sinon',
-    helpUrl:
-      'https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/keyCode',
-    message0: 'Bouton gamepad %1 enfoncé %2',
-    args0: [
-      {
-        type: 'field_dropdown',
-        name: 'CODE',
-        options: [
-          ['B0', GAMEPAD_BUTTON.B0],
-          ['B1', GAMEPAD_BUTTON.B1],
-          ['B2', GAMEPAD_BUTTON.B2],
-          ['B3', GAMEPAD_BUTTON.B3],
-          ['B4', GAMEPAD_BUTTON.B4],
-          ['B5', GAMEPAD_BUTTON.B5]
-        ]
-      },
-      {
-        type: 'input_dummy',
-        name: 'NAME'
-      }
-    ],
-    output: 'Boolean',
-    colour: INPUT_COLOR
-  },
-  {
-    type: 'spacecode_isGamepadJoystickPointing',
-    tooltip:
-      'Retourne true si la touche correspondant au code est enfoncée, false sinon',
-    helpUrl:
-      'https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/keyCode',
-    message0: 'Joystick vers %1 %2',
-    args0: [
-      {
-        type: 'field_dropdown',
-        name: 'CODE',
-        options: [
-          ['Haut', JOYSTICK_DIRECTION.UP],
-          ['Bas', JOYSTICK_DIRECTION.DOWN],
-          ['Gauche', JOYSTICK_DIRECTION.LEFT],
-          ['Droite', JOYSTICK_DIRECTION.RIGHT]
-        ]
-      },
-      {
-        type: 'input_dummy',
-        name: 'NAME'
-      }
-    ],
-    output: 'Boolean',
-    colour: INPUT_COLOR
-  },
-  {
     type: 'spacecode_getAttribute',
     tooltip: "Valeur d'un attribut du vaisseau ",
     helpUrl: '',
@@ -314,20 +232,6 @@ Blockly.common.defineBlocksWithJsonArray([
     nextStatement: null,
     colour: BLOCK_COLOR,
     inputsInline: true
-  },
-  {
-    type: 'spacecode_getNearestEnemy',
-    tooltip: '',
-    helpUrl: '',
-    message0: 'Enemi le plus proche %1',
-    args0: [
-      {
-        type: 'input_dummy',
-        name: 'NAME'
-      }
-    ],
-    output: 'Sprite',
-    colour: 225
   },
   {
     type: 'spacecode_scan',

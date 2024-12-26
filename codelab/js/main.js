@@ -241,8 +241,11 @@ function loadDemo(demoblocks) {
 function resetWorkspace() {
   loadDemo(DEMO_BASIC)
   localStorage.removeItem('profile')
+  initProfile()
+  saveCode()
 }
 
 if (!restoreCode()) {
   resetWorkspace()
+  openLoginModal()
 }

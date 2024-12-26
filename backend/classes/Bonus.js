@@ -4,7 +4,9 @@ const { GameObject } = require('./GameObject')
 const BonusType = {
   CRYSTAL: 'CRYSTAL',
   HEART: 'HEART',
-  SHIELD: 'SHIELD'
+  SHIELD: 'SHIELD',
+  BOMB: 'BOMB',
+  RIFFLE: 'RIFFLE'
 }
 
 class Bonus extends GameObject {

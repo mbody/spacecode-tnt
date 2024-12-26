@@ -1,4 +1,8 @@
-const { PROJECTILE_RADIUS, PROJECTILE_SPEED } = require('./Constants')
+const {
+  PROJECTILE_RADIUS,
+  PROJECTILE_SPEED,
+  BONUS_BOMB_NB_BULLETS
+} = require('./Constants')
 const { Projectile } = require('./Projectile')
 const {
   backEndEnemies,
@@ -38,6 +42,15 @@ class ProjectileManager {
       playerId: player.id,
       color: player.color
     })
+  }
+
+  static createNewBomb(player) {
+    const nbBullets = BONUS_BOMB_NB_BULLETS
+    let rotation = player.rotation
+    for (let index = 0; index < nbBullets; index++) {
+      ProjectileManager.createNewProjectile({ ...player, rotation })
+      rotation += 360 / nbBullets
+    }
   }
 }
 

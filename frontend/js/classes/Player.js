@@ -138,10 +138,5 @@ class Player extends GameObject {
     c.stroke()
   }
 
-  static playerKilled() {
-    if (!this.dieSound) {
-      this.dieSound = GameObject.getMediaById('playerDie')
-    }
-    this.dieSound.play()
-  }
+  static playerKilled() {}
 }

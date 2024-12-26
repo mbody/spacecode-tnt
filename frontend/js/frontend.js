@@ -109,7 +109,7 @@ socket.on('updateProjectiles', (backEndProjectiles) => {
     }
   }
 })
-
+/*
 socket.on('updateEnemies', (backEndEnemies) => {
   //console.log('updating enemies')
   for (const id in backEndEnemies) {
@@ -129,8 +129,11 @@ socket.on('updateEnemies', (backEndEnemies) => {
     }
   }
 })
+  */
 
 socket.on('updateBonuses', (backEndBonuses) => {
+  if (!document.hasFocus()) return
+
   for (const id in backEndBonuses) {
     const bonus = backEndBonuses[id]
 
@@ -150,6 +153,7 @@ socket.on('updateBonuses', (backEndBonuses) => {
 })
 
 socket.on('updatePlayers', (backEndPlayers) => {
+  if (!document.hasFocus()) return
   for (const id in backEndPlayers) {
     const backEndPlayer = backEndPlayers[id]
     const div = document.querySelector(`tr[data-id="${id}"]`)
@@ -238,7 +242,7 @@ socket.on('updatePlayers', (backEndPlayers) => {
     }
   }
 })
-
+/*
 socket.on('enemyKilled', ({ enemy, killedBy }) => {
   Enemy.enemyKilled()
   // create explosion
@@ -251,8 +255,9 @@ socket.on('enemyKilled', ({ enemy, killedBy }) => {
     )
   }
 })
-
+*/
 socket.on('playerKilled', ({ player }) => {
+  if (!document.hasFocus()) return
   Player.playerKilled()
   // create explosion
   for (let i = 0; i < player.radius * 2; i++) {
@@ -343,88 +348,3 @@ const keys = {
 const SPEED = 5
 const playerInputs = []
 let sequenceNumber = 0
-setInterval(() => {
-  if (keys.w.pressed) {
-    sequenceNumber++
-    //playerInputs.push({ sequenceNumber, dx: 0, dy: -SPEED })
-    // frontEndPlayers[socket.id].y -= SPEED
-    socket.emit('keydown', { keycode: 'ArrowUp', sequenceNumber })
-  }
-
-  if (keys.a.pressed) {
-    sequenceNumber++
-    //playerInputs.push({ sequenceNumber, dx: -SPEED, dy: 0 })
-    // frontEndPlayers[socket.id].x -= SPEED
-    socket.emit('keydown', { keycode: 'ArrowLeft', sequenceNumber })
-  }
-
-  if (keys.s.pressed) {
-    sequenceNumber++
-    //playerInputs.push({ sequenceNumber, dx: 0, dy: SPEED })
-    // frontEndPlayers[socket.id].y += SPEED
-    socket.emit('keydown', { keycode: 'ArrowDown', sequenceNumber })
-  }
-
-  if (keys.d.pressed) {
-    sequenceNumber++
-    //playerInputs.push({ sequenceNumber, dx: SPEED, dy: 0 })
-    // frontEndPlayers[socket.id].x += SPEED
-    socket.emit('keydown', { keycode: 'ArrowRight', sequenceNumber })
-  }
-
-  if (keys.space.pressed) {
-    socket.emit('shoot')
-  }
-}, 15)
-
-window.addEventListener('keydown', (event) => {
-  if (!frontEndPlayers[socket.id]) return
-
-  console.log(event.code)
-
-  switch (event.code) {
-    case 'ArrowUp':
-      keys.w.pressed = true
-      break
-
-    case 'ArrowLeft':
-      keys.a.pressed = true
-      break
-
-    case 'ArrowDown':
-      keys.s.pressed = true
-      break
-
-    case 'ArrowRight':
-      keys.d.pressed = true
-      break
-    case 'Space':
-      keys.space.pressed = true
-      break
-  }
-})
-
-window.addEventListener('keyup', (event) => {
-  if (!frontEndPlayers[socket.id]) return
-
-  switch (event.code) {
-    case 'ArrowUp':
-      keys.w.pressed = false
-      break
-
-    case 'ArrowLeft':
-      keys.a.pressed = false
-      break
-
-    case 'ArrowDown':
-      keys.s.pressed = false
-      break
-
-    case 'ArrowRight':
-      keys.d.pressed = false
-      break
-    case 'Space':
-      keys.space.pressed = false
-      break
-  }
-})

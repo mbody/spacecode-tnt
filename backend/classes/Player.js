@@ -13,7 +13,10 @@ const {
   PLAYER_LIVES,
   PLAYER_MAX_ROTATION,
   PLAYER_MAX_SPEED,
-  PLAYER_SCAN_DISTANCE
+  PLAYER_SCAN_DISTANCE,
+  BONUS_RIFFLE_DELAY,
+  BONUS_RIFFLE_SHOOT_INTERVAL,
+  PLAYER_SCAN_ANGLE
 } = require('./Constants')
 const { GameObject } = require('./GameObject')
 const { ProjectileManager } = require('./ProjectileManager')
@@ -24,7 +27,7 @@ function mathRandomInt(a = 0, b = 100) {
 }
 
 function extractFunction(code, delimiter) {
-  var rx = new RegExp(String.raw`<${delimiter}>(.*)</${delimiter}>`, 'g')
+  var rx = new RegExp(String.raw`<${delimiter}>(.*?)</${delimiter}>`)
   var arr = rx.exec(code)
   return arr && arr.length > 0 && arr[1]
 }
@@ -48,6 +51,7 @@ class Player extends GameObject {
     const onInit = eval(extractFunction(code, 'INIT'))
     const onDetected = eval(extractFunction(code, 'DETECTED'))
     const onPlayerKilled = eval(extractFunction(code, 'PLAYER_KILLED'))
+    const onBonusCollected = eval(extractFunction(code, 'BONUS_COLLECTED'))
     this.id = id
     this.rotation = rotation
     this.username = username
@@ -57,6 +61,7 @@ class Player extends GameObject {
     this.onInit = () => onInit && onInit()
     this.onDetected = () => onDetected && onDetected()
     this.onPlayerKilled = () => onPlayerKilled && onPlayerKilled()
+    this.onBonusCollected = () => onBonusCollected && onBonusCollected()
     this.onUpdate = onUpdate
     this.lives = lives
     this.onInit()
@@ -148,12 +153,22 @@ class Player extends GameObject {
           this.invicible = false
         }, PLAYER_INVICIBLE_DELAY)
         break
+      case BonusType.RIFFLE:
+        this.riffle = true
+        setTimeout(() => {
+          this.riffle = false
+        }, BONUS_RIFFLE_DELAY)
+        break
       case BonusType.HEART:
         if (this.lives < PLAYER_LIVES) {
           this.lives++
         }
         break
+      case BonusType.BOMB:
+        ProjectileManager.createNewBomb(this)
+        break
     }
+    this.onBonusCollected()
   }
 
   respawn = () => {
@@ -168,9 +183,8 @@ class Player extends GameObject {
   reset() {}
 
   canShoot() {
-    return (
-      this.alive && Date.now() - this.lastShootTimestamp > SHOOT_INTERVAL //- this.score * 2
-    )
+    const interval = this.riffle ? BONUS_RIFFLE_SHOOT_INTERVAL : SHOOT_INTERVAL
+    return this.alive && Date.now() - this.lastShootTimestamp > interval //- this.score * 2
   }
 
   shoot() {
@@ -202,7 +216,7 @@ class Player extends GameObject {
       if (dx == 0 && dy == 0) continue
       const angleTo = 90 + (180 * Math.atan2(dy, dx)) / Math.PI
       const da = Math.abs((this.rotation - angleTo) % 360)
-      if (Math.abs(da) < 10) {
+      if (Math.abs(da) < PLAYER_SCAN_ANGLE) {
         const distance2 = dx * dx + dy * dy
         if (distance2 < PLAYER_SCAN_DISTANCE) {
           sprite instanceof Player && sprite.onDetected()

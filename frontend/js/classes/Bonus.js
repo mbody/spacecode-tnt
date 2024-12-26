@@ -1,6 +1,4 @@
 class Bonus extends GameObject {
-  static collectedSound
-
   constructor({ type, ...data }) {
     super(data)
     this.type = type
@@ -16,6 +14,14 @@ class Bonus extends GameObject {
         case 'HEART':
           this.sprite = GameObject.getMediaById('heart')
           this.shadowColor = 'red'
+          break
+        case 'BOMB':
+          this.sprite = GameObject.getMediaById('bomb')
+          this.shadowColor = 'yellow'
+          break
+        case 'RIFFLE':
+          this.sprite = GameObject.getMediaById('riffle')
+          this.shadowColor = 'yellow'
           break
         default:
           this.sprite = GameObject.getMediaById('crystal')
@@ -40,10 +46,5 @@ class Bonus extends GameObject {
     )
   }
 
-  static bonusCollected() {
-    if (!this.collectedSound) {
-      this.collectedSound = GameObject.getMediaById('bonusCollected')
-    }
-    this.collectedSound.play()
-  }
+  static bonusCollected() {}
 }

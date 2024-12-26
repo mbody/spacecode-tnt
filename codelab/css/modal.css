@@ -10,8 +10,16 @@ input[type='color'] {
   box-sizing: border-box;
 }
 
+#rocket-container {
+  background-color: black;
+  border-radius: 300px;
+  padding: 10px;
+  width: 130px;
+  height: 130px;
+  align-self: center;
+}
 #rocket {
-  font-size: 130px;
+  font-size: 120px;
 }
 
 #color {
@@ -65,9 +73,10 @@ input[type='color'] {
 
 /*centre the display image inside the container*/
 .imgcontainer {
-  text-align: center;
   margin: 24px 0 12px 0;
   position: relative;
+  display: flex;
+  justify-content: center;
 }
 
 /*set image properties*/
@@ -102,19 +111,25 @@ span.psw {
   padding-top: 60px;
 }
 
+button#reset-btn {
+  background-color: white;
+  border: 2px #6aa618 solid;
+  color: #6aa618;
+}
+
 /*style the model content box*/
 .modal-content {
   background-color: #fefefe;
   margin: 5% auto 15% auto;
-  border: 1px solid #888;
+  border: 2px solid #888;
   width: 360px;
 }
 
 /*style the close button*/
 .close {
   position: absolute;
-  right: 25px;
-  top: 0;
+  right: 0px;
+  top: -25px;
   color: #000;
   font-size: 35px;
   font-weight: bold;
