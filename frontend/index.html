@@ -61,19 +61,19 @@
         font-size: 18px;
       }
 
-      #nextPlayers {
+      #allPlayers {
         position: absolute;
         right: 10;
         top: 10;
+        font-size: smaller;
         color: white;
         padding: 8px;
         user-select: none;
         background: rgba(0, 0, 0, 0.5);
       }
-      #nextPlayersTitle {
-        margin-bottom: 8px;
-        font-weight: bolder;
-        font-size: 18px;
+
+      #allPlayers table {
+        font-size: smaller;
       }
 
       #serverUrl {
@@ -114,15 +114,20 @@
   <body style="display: flex; align-items: center; justify-content: center">
     <canvas id="gameboard"></canvas>
     <div id="leaderboard">
-      <div id="leaderboardTitle">Leaderboard</div>
+      <div id="leaderboardTitle">Actuellement</div>
       <table>
         <tbody id="playerLabels"></tbody>
       </table>
     </div>
-    <div id="nextPlayers">
-      <div id="nextPlayersTitle">Prochains joueurs</div>
+    <div id="allPlayers">
       <table>
-        <tbody id="nextPlayersTable"></tbody>
+        <thead>
+          <th>Rk</th>
+          <th>Joueur</th>
+          <th>Q</th>
+          <th>Top</th>
+        </thead>
+        <tbody id="allPlayersTable"></tbody>
       </table>
     </div>
     <div id="serverUrl">localhost</div>

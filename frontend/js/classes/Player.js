@@ -2,7 +2,16 @@ class Player extends GameObject {
   HEIGHT = 30
   WIDTH = 8
 
-  constructor({ rotation, username, invicible, alive, color, lives, ...data }) {
+  constructor({
+    rotation,
+    username,
+    invicible,
+    alive,
+    color,
+    lives,
+    bestScore,
+    ...data
+  }) {
     super(data)
     this.rotation = rotation
     this.color = color
@@ -11,9 +20,10 @@ class Player extends GameObject {
     this.alive = alive
     this.lives = lives
     this.invicible = invicible
+    this.bestScore = bestScore
   }
 
-  updateFromBackend({ alive, invicible, color, lives }) {
+  updateFromBackend({ alive, invicible, color, lives, username, bestScore }) {
     this.alive = alive
     this.color = color
     this.originalColor = color
@@ -22,6 +32,8 @@ class Player extends GameObject {
       this.color = this.originalColor
     }
     this.invicible = invicible
+    this.username = username
+    this.bestScore = bestScore
   }
 
   draw() {
