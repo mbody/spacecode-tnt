@@ -34,6 +34,7 @@ function extractFunction(code, delimiter) {
 
 class Player extends GameObject {
   lastShootTimestamp = 0
+  _score = 0
 
   constructor({
     id,
@@ -43,6 +44,8 @@ class Player extends GameObject {
     radius = PLAYER_RADIUS,
     code,
     lives = PLAYER_LIVES,
+    timestamp,
+    bestScore = 0,
     ...data
   }) {
     super({ radius, ...data })
@@ -52,12 +55,13 @@ class Player extends GameObject {
     const onDetected = eval(extractFunction(code, 'DETECTED'))
     const onPlayerKilled = eval(extractFunction(code, 'PLAYER_KILLED'))
     const onBonusCollected = eval(extractFunction(code, 'BONUS_COLLECTED'))
+    this.code = code
     this.id = id
     this.rotation = rotation
     this.username = username
-    this.score = score
     this.alive = true
     this.invicible = false
+    this.bestScore = bestScore
     this.onInit = () => onInit && onInit()
     this.onDetected = () => onDetected && onDetected()
     this.onPlayerKilled = () => onPlayerKilled && onPlayerKilled()
@@ -65,6 +69,21 @@ class Player extends GameObject {
     this.onUpdate = onUpdate
     this.lives = lives
     this.onInit()
+    this.timestamp = timestamp
+
+    Object.defineProperties(this, {
+      _score: { writable: true, enumerable: false },
+      score: {
+        get: function () {
+          return this._score
+        },
+        set: function (value) {
+          this._score = value
+          if (value > this.bestScore) this.bestScore = value
+        },
+        enumerable: true
+      }
+    })
   }
 
   moveForward(speed = PLAYER_SPEED) {
@@ -135,11 +154,12 @@ class Player extends GameObject {
     this.y = SCREEN.height * Math.random()
     setTimeout(this.respawn, PLAYER_RESPAWN_DELAY)
     this.lives--
-    if (this.lives == 0) {
-      this.score = 0
-      this.lives = PLAYER_LIVES
-    }
     this.invicible = true
+  }
+
+  reset() {
+    this.score = 0
+    this.lives = PLAYER_LIVES
   }
 
   collectBonus(bonus) {
@@ -179,8 +199,6 @@ class Player extends GameObject {
       this.invicible = false
     }, PLAYER_INVICIBLE_DELAY)
   }
-
-  reset() {}
 
   canShoot() {
     const interval = this.riffle ? BONUS_RIFFLE_SHOOT_INTERVAL : SHOOT_INTERVAL

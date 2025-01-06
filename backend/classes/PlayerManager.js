@@ -5,10 +5,12 @@ const {
   backEndEnemies,
   backEndPlayers,
   backEndProjectiles,
-  backEndBonuses
+  backEndBonuses,
+  pendingPlayers
 } = require('./SharedModel')
 const fs = require('fs')
 const bcrypt = require('bcrypt')
+const { MAX_PLAYERS } = require('./Constants')
 
 const SALT = '$2b$10$08PYpUzJf9VA4.YYlo65be.5lpuW665YyotJbk4AAAB!'
 const PLAYERS_BACKUP_FILE = '.players.json'
@@ -30,10 +32,6 @@ class PlayerManager {
             // Player hit
             PlayerManager.onPlayerDie({ player })
 
-            if (PlayerManager.hasNoMorePlayer()) {
-              //return false
-              return true
-            }
             break
           }
         }
@@ -104,10 +102,50 @@ class PlayerManager {
     const phone = data.id
     data.id = await bcrypt.hash(phone, SALT)
 
-    backEndPlayers[data.id] = new Player(data)
+    // if player was in pendingPlayers, remove it
+    PlayerManager.removePlayerFromPendingPlayer(data.id)
+
+    PlayerManager.addPlayerToBattleground(data)
 
     PLAYERS_BACKUP[phone] = data
     PlayerManager.saveBackup()
+  }
+
+  static addPlayerToBattleground(data) {
+    data.timestamp = Date.now()
+    let newPlayer = null
+
+    try {
+      newPlayer = data instanceof Player ? data : new Player(data)
+    } catch (e) {
+      console.error(
+        `Joueur avec id '${data.id}' ne peut pas être chargé à cause de son code ! `
+      )
+      console.error(e)
+      return
+    }
+
+    if (
+      Object.values(backEndPlayers).length >= MAX_PLAYERS &&
+      !backEndPlayers[data.id]
+    ) {
+      // remove oldest players
+      let oldestPlayerTS = Date.now()
+      let oldestPlayerId = Object.keys(backEndPlayers)[0]
+
+      for (const playerId in backEndPlayers) {
+        const player = backEndPlayers[playerId]
+        if (player.timestamp < oldestPlayerTS) {
+          oldestPlayerId = playerId
+          oldestPlayerTS = player.timestamp
+        }
+      }
+      const oldPlayer = backEndPlayers[oldestPlayerId]
+      pendingPlayers.push(oldPlayer)
+      NetworkManager.emit('updatePendingPlayers', pendingPlayers)
+      delete backEndPlayers[oldestPlayerId]
+    }
+    backEndPlayers[newPlayer.id] = newPlayer
   }
 
   static updateProperty({ playerId, property, value }) {
@@ -120,6 +158,22 @@ class PlayerManager {
   static onPlayerDie({ player }) {
     NetworkManager.io.emit('playerKilled', { player })
     player.die()
+    if (player.lives == 0) {
+      player.reset()
+      if (pendingPlayers.length > 0) {
+        // remove this player
+        delete backEndPlayers[player.id]
+        // restore a pending player
+        const nextPlayer = pendingPlayers.splice(0, 1)[0]
+        PlayerManager.addPlayerToBattleground(nextPlayer)
+        pendingPlayers.push(player)
+        NetworkManager.emit('updatePendingPlayers', pendingPlayers)
+      }
+    }
+    if (PlayerManager.hasNoMorePlayer()) {
+      //return false
+      return true
+    }
   }
 
   static onPlayerBonus({ player, bonus }) {
@@ -163,17 +217,27 @@ class PlayerManager {
         const backup = JSON.parse(data)
         for (const [phone, playerData] of Object.entries(backup)) {
           try {
-            backEndPlayers[playerData.id] = new Player(playerData)
+            PlayerManager.addPlayerToBattleground(playerData)
             PLAYERS_BACKUP[phone] = playerData
           } catch (e) {
             console.log('Error while restoring player ' + phone)
+            console.error(e)
           }
         }
       }
     })
   }
-}
 
-PlayerManager.restoreBackup()
+  static removePlayerFromPendingPlayer(playerId) {
+    for (let index = 0; index < pendingPlayers.length; index++) {
+      const element = pendingPlayers[index]
+      if (element.id == playerId) {
+        pendingPlayers.splice(index, 1)
+        NetworkManager.emit('updatePendingPlayers', pendingPlayers)
+        return
+      }
+    }
+  }
+}
 
 module.exports = { PlayerManager }

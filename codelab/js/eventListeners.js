@@ -139,7 +139,9 @@ function doSendCode() {
         Toaster.show('Code envoyé avec succès !')
       } else {
         // Request finished. Do processing here.
-        Toaster.error("Désolé, une erreur s'est produite :'(")
+        Toaster.error(
+          xhr.responseText || "Désolé, une erreur s'est produite :'("
+        )
       }
     }
   }

@@ -3,7 +3,9 @@ const {
   backEndPlayers,
   backEndEnemies,
   backEndProjectiles,
-  backEndBonuses
+  backEndBonuses,
+  game,
+  pendingPlayers
 } = require('./classes/SharedModel')
 const { ProjectileManager } = require('./classes/ProjectileManager')
 const { PlayerManager } = require('./classes/PlayerManager')
@@ -20,6 +22,13 @@ class GameManager {
     NetworkManager.registerPostEndpoint('/player', this.onNewBotPlayer)
     // backend ticker
     setInterval(this.loop, 1000 / 30)
+    game.isTournament = process.env.MODE === 'TOURNAMENT'
+    if (!game.isTournament) {
+      PlayerManager.restoreBackup()
+      console.log('=========== TRAINING MODE ===========')
+    } else {
+      console.log('=========== TOURNAMENT MODE ===========')
+    }
   }
 
   onConnection = (socket) => {
@@ -29,91 +38,28 @@ class GameManager {
       this.onInitDisplay(socket.id, data)
       callback && this.initGameCallback(callback)
     })
-    socket.on('newPlayer', (data, callback) => {
-      this.onNewPlayer(socket.id, data)
-      callback && this.initGameCallback(callback)
-    })
     socket.on('disconnect', (data) => this.onDisconnect(socket.id, data))
-    socket.on('updatePlayerProperty', ({ key, value }, callback) =>
-      this.onUpdatePlayerProperty(socket.id, key, value, callback)
-    )
-    socket.on('keydown', (data, callback) =>
-      this.onKeydown(socket.id, data, callback)
-    )
-    socket.on('shoot', (data) => this.onShoot(socket.id, data))
-
     NetworkManager.emit('updatePlayers', backEndPlayers)
   }
 
   onNewBotPlayer = (request, response) => {
-    const data = request.body
-    const id = data.phoneNumber
-    this.onNewPlayer(id, data)
-    response.send('ok !')
-  }
-
-  onShoot = (playerId) => {
-    const player = backEndPlayers[playerId]
-    if (!player) return
-
-    player.shoot()
-  }
-
-  onKeydown = (playerId, { keycode, sequenceNumber }, callback) => {
-    const backEndPlayer = backEndPlayers[playerId]
-
-    if (!backEndPlayer || !backEndPlayer.alive) return
-
-    backEndPlayer.sequenceNumber = sequenceNumber
-    switch (keycode) {
-      case 'ArrowUp':
-        backEndPlayer.moveForward()
-        break
-
-      case 'ArrowLeft':
-        // turn anti-clockwise
-        backEndPlayer.turnLeft()
-        break
-
-      case 'ArrowDown':
-        // move backward
-        backEndPlayer.moveBackward()
-        break
-
-      case 'ArrowRight':
-        // turn clockwise
-        backEndPlayer.turnRight()
-        break
+    if (!game.isTournament) {
+      const data = request.body
+      const id = data.phoneNumber
+      PlayerManager.createNewPlayer({
+        id,
+        ...data
+      })
+      response.send('ok !')
+    } else {
+      response.status(403).send('Désolé, opération impossible en tournoi !')
     }
-    backEndPlayer.checkConstraints()
-    !!callback && callback(backEndPlayer)
   }
-
-  onUpdatePlayerProperty = (playerId, property, value) => {
-    const player = backEndPlayers[playerId]
-    if (!player || !player.alive) return
-
-    PlayerManager.updateProperty({
-      playerId,
-      property,
-      value
-    })
-  }
-
   onDisconnect(clientId, reason) {
     console.log(reason)
     delete backEndPlayers[clientId]
     delete this.displayers[clientId]
     NetworkManager.emit('updatePlayers', backEndPlayers)
-  }
-
-  onNewPlayer = (playerId, { username, color, code }) => {
-    PlayerManager.createNewPlayer({
-      id: playerId,
-      color,
-      username,
-      code
-    })
   }
 
   onInitDisplay = (clientId, { width = 0, height = 0 }) => {
@@ -123,6 +69,7 @@ class GameManager {
         height
       }
     }
+    NetworkManager.emit('updatePendingPlayers', pendingPlayers)
   }
 
   initGameCallback(callback) {

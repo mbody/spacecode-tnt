@@ -60,6 +60,22 @@
         font-weight: bolder;
         font-size: 18px;
       }
+
+      #nextPlayers {
+        position: absolute;
+        right: 10;
+        top: 10;
+        color: white;
+        padding: 8px;
+        user-select: none;
+        background: rgba(0, 0, 0, 0.5);
+      }
+      #nextPlayersTitle {
+        margin-bottom: 8px;
+        font-weight: bolder;
+        font-size: 18px;
+      }
+
       #serverUrl {
         position: absolute;
         bottom: 10;
@@ -101,6 +117,12 @@
       <div id="leaderboardTitle">Leaderboard</div>
       <table>
         <tbody id="playerLabels"></tbody>
+      </table>
+    </div>
+    <div id="nextPlayers">
+      <div id="nextPlayersTitle">Prochains joueurs</div>
+      <table>
+        <tbody id="nextPlayersTable"></tbody>
       </table>
     </div>
     <div id="serverUrl">localhost</div>

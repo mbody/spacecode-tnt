@@ -49,7 +49,8 @@ var toolbox = {
             }
           }
         },
-        { kind: 'block', type: 'spacecode_handler' }
+        { kind: 'block', type: 'spacecode_handler' },
+        { kind: 'block', type: 'spacecode_now' }
       ]
     },
     {
@@ -188,6 +189,13 @@ var toolbox = {
         }
       ]
     }
+    /*    {
+      kind: 'category',
+      name: 'Variables',
+      categorystyle: 'variable_category',
+      custom: 'VARIABLE'
+    }
+      */
   ]
 }
 

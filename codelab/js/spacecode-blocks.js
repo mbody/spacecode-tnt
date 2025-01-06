@@ -72,7 +72,7 @@ Blockly.common.defineBlocksWithJsonArray([
       {
         type: 'input_value',
         name: 'VALUE',
-        chack: 'Number',
+        check: 'Number',
         min: -50,
         max: 50
       }
@@ -204,6 +204,14 @@ Blockly.common.defineBlocksWithJsonArray([
         name: 'NAME'
       }
     ],
+    output: 'Number',
+    colour: VALUE_COLOR
+  },
+  {
+    type: 'spacecode_now',
+    tooltip: '',
+    helpUrl: '',
+    message0: 'maintenant (ms)',
     output: 'Number',
     colour: VALUE_COLOR
   },
@@ -381,5 +389,15 @@ javascript.javascriptGenerator.forBlock['spacecode_screen'] = function (block) {
       code = SCREEN.height
       break
   }
+  return [code, javascript.Order.NONE]
+}
+
+javascript.javascriptGenerator.forBlock['spacecode_now'] = function () {
+  const code = 'Date.now()'
+  return [code, javascript.Order.NONE]
+}
+
+javascript.javascriptGenerator.forBlock['spacecode_now'] = function () {
+  const code = 'Date.now()'
   return [code, javascript.Order.NONE]
 }

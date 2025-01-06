@@ -11,6 +11,8 @@
     "nodemon": "3.1.7"
   },
   "scripts": {
-    "start": "nodemon app"
+    "start": "nodemon app",
+    "training": "export MODE=TRAINING && npm start",
+    "tournament": "export MODE=TOURNAMENT && npm start"
   }
 }

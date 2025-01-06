@@ -231,7 +231,7 @@ socket.on('updatePlayers', (backEndPlayers) => {
   // this is where we delete frontend players
   for (const id in frontEndPlayers) {
     if (!backEndPlayers[id]) {
-      const divToDelete = document.querySelector(`div[data-id="${id}"]`)
+      const divToDelete = document.querySelector(`tr[data-id="${id}"]`)
       divToDelete.parentNode.removeChild(divToDelete)
 
       if (id === socket.id) {
@@ -242,6 +242,17 @@ socket.on('updatePlayers', (backEndPlayers) => {
     }
   }
 })
+
+socket.on('updatePendingPlayers', (pendingPlayers) => {
+  const nextPlayersTable = document.getElementById('nextPlayersTable')
+  nextPlayersTable.innerHTML = ''
+  let index = 1
+  for (const nextPlayer of pendingPlayers) {
+    nextPlayersTable.innerHTML += `<tr><td>${index}.</td><td>${nextPlayer.username}</td><td>${nextPlayer.bestScore}</td></tr>`
+    index++
+  }
+})
+
 /*
 socket.on('enemyKilled', ({ enemy, killedBy }) => {
   Enemy.enemyKilled()

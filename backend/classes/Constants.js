@@ -3,6 +3,9 @@ const CONSTANTES = {
     width: 3556, //(2000 * 16) / 9,
     height: 2000
   },
+  // GAME
+  MAX_PLAYERS: 5,
+
   // PROJECTILES
   PROJECTILE_RADIUS: 5,
   PROJECTILE_SPEED: 30,
