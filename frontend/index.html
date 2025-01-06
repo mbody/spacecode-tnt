@@ -53,7 +53,7 @@
         color: white;
         padding: 8px;
         user-select: none;
-        background: rgba(0, 0, 0, 0.5);
+        background: rgba(0, 0, 0, 0.3);
       }
       #leaderboardTitle {
         margin-bottom: 8px;
@@ -64,16 +64,23 @@
       #allPlayers {
         position: absolute;
         right: 10;
-        top: 10;
+        top: 0;
         font-size: smaller;
-        color: white;
         padding: 8px;
         user-select: none;
-        background: rgba(0, 0, 0, 0.5);
+        background: rgba(0, 0, 0, 0.3);
+        max-height: 98vh;
+        overflow: auto;
       }
 
       #allPlayers table {
         font-size: smaller;
+        color: rgba(255, 255, 255, 0.6);
+      }
+
+      #mvp {
+        color: gold;
+        font-weight: bold;
       }
 
       #serverUrl {
@@ -114,7 +121,7 @@
   <body style="display: flex; align-items: center; justify-content: center">
     <canvas id="gameboard"></canvas>
     <div id="leaderboard">
-      <div id="leaderboardTitle">Actuellement</div>
+      <div id="leaderboardTitle">Actuellement en jeu</div>
       <table>
         <tbody id="playerLabels"></tbody>
       </table>

@@ -19,6 +19,7 @@ const {
   PLAYER_SCAN_ANGLE
 } = require('./Constants')
 const { GameObject } = require('./GameObject')
+const { PlayerManager } = require('./PlayerManager')
 const { ProjectileManager } = require('./ProjectileManager')
 const { backEndPlayers, backEndBonuses } = require('./SharedModel')
 
@@ -79,7 +80,9 @@ class Player extends GameObject {
         },
         set: function (value) {
           this._score = value
-          if (value > this.bestScore) this.bestScore = value
+          if (value > this.bestScore) {
+            this.bestScore = value
+          }
         },
         enumerable: true
       }

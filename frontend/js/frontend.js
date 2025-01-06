@@ -243,23 +243,17 @@ socket.on('updatePlayers', (backEndPlayers) => {
   }
 })
 
-socket.on('updatePendingPlayers', (pendingPlayers) => {
-  const allPlayers = [...Object.values(frontEndPlayers)]
-  pendingPlayers.forEach((player, index) => {
-    player.pendingRank = index + 1
-    allPlayers.push(player)
-  })
-  // sort by best score
-  allPlayers.sort((a, b) => b.bestScore - a.bestScore)
+socket.on('updateAllPlayers', (allPlayers) => {
   const allPlayersTable = document.getElementById('allPlayersTable')
   allPlayersTable.innerHTML = ''
   let index = 1
   for (const player of allPlayers) {
-    allPlayersTable.innerHTML += `<tr><td>${index}</td><td>${
-      player.username
-    }</td><td>${player.pendingRank || '-'}</td><td>${
-      player.bestScore
-    }</td></tr>`
+    allPlayersTable.innerHTML += `<tr ${
+      index == 1 ? 'id="mvp"' : ''
+    } ><td>${index}</td><td>
+    ${player.username}
+    ${index == 1 ? '&#128081;' : ''} 
+    </td><td>${player.pendingRank || '-'}</td><td>${player.bestScore}</td></tr>`
     index++
   }
 })

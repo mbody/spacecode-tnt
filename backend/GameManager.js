@@ -69,7 +69,7 @@ class GameManager {
         height
       }
     }
-    NetworkManager.emit('updatePendingPlayers', pendingPlayers)
+    PlayerManager.updateAllPlayers()
   }
 
   initGameCallback(callback) {

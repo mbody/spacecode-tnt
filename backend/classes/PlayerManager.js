@@ -142,10 +142,11 @@ class PlayerManager {
       }
       const oldPlayer = backEndPlayers[oldestPlayerId]
       pendingPlayers.push(oldPlayer)
-      NetworkManager.emit('updatePendingPlayers', pendingPlayers)
       delete backEndPlayers[oldestPlayerId]
     }
+    newPlayer.pendingRank = '-'
     backEndPlayers[newPlayer.id] = newPlayer
+    PlayerManager.updateAllPlayers()
   }
 
   static updateProperty({ playerId, property, value }) {
@@ -167,7 +168,7 @@ class PlayerManager {
         const nextPlayer = pendingPlayers.splice(0, 1)[0]
         PlayerManager.addPlayerToBattleground(nextPlayer)
         pendingPlayers.push(player)
-        NetworkManager.emit('updatePendingPlayers', pendingPlayers)
+        PlayerManager.updateAllPlayers()
       }
     }
     if (PlayerManager.hasNoMorePlayer()) {
@@ -233,10 +234,22 @@ class PlayerManager {
       const element = pendingPlayers[index]
       if (element.id == playerId) {
         pendingPlayers.splice(index, 1)
-        NetworkManager.emit('updatePendingPlayers', pendingPlayers)
+        PlayerManager.updateAllPlayers()
         return
       }
     }
+  }
+
+  static updateAllPlayers() {
+    const allPlayers = [...Object.values(backEndPlayers)]
+    pendingPlayers.forEach((player, index) => {
+      player.pendingRank = index + 1
+      allPlayers.push(player)
+    })
+    // sort by best score
+    allPlayers.sort((a, b) => b.bestScore - a.bestScore)
+
+    NetworkManager.emit('updateAllPlayers', allPlayers)
   }
 }
 
