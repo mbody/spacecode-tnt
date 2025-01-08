@@ -245,7 +245,7 @@ Blockly.common.defineBlocksWithJsonArray([
     type: 'spacecode_scan',
     tooltip: '',
     helpUrl: '',
-    message0: '%1 %2 détecté',
+    message0: '%1 détecté',
     args0: [
       {
         type: 'field_dropdown',
@@ -254,14 +254,48 @@ Blockly.common.defineBlocksWithJsonArray([
           ['adversaire', 'PLAYER'],
           ['bonus', 'BONUS']
         ]
-      },
-      {
-        type: 'input_dummy',
-        name: 'NAME'
       }
     ],
     output: 'Boolean',
     colour: ACTION_COLOR
+  },
+  {
+    type: 'spacecode_state',
+    tooltip: '',
+    helpUrl: '',
+    message0: '%1 actif',
+    args0: [
+      {
+        type: 'field_dropdown',
+        name: 'STATE',
+        options: [
+          ['Bouclier', 'INVICIBLE'],
+          ['Rafale', 'RIFFLE']
+        ]
+      }
+    ],
+    output: 'Boolean',
+    colour: ACTION_COLOR
+  },
+  {
+    type: 'spacecode_modulo',
+    tooltip: '',
+    helpUrl: '',
+    message0: '%1 modulo %2',
+    args0: [
+      {
+        type: 'input_value',
+        name: 'VALUE',
+        check: 'Number'
+      },
+      {
+        type: 'input_value',
+        name: 'MODULO',
+        check: 'Number'
+      }
+    ],
+    output: 'Number',
+    colour: 225
   }
 ])
 
@@ -331,6 +365,21 @@ javascript.javascriptGenerator.forBlock['spacecode_scan'] = function (block) {
   return [code, javascript.Order.NONE]
 }
 
+javascript.javascriptGenerator.forBlock['spacecode_state'] = function (block) {
+  const state = block.getFieldValue('STATE')
+  let code = 'false'
+  switch (state) {
+    case 'RIFFLE':
+      code = `this.riffle`
+      break
+    case 'INVICIBLE':
+      code = `this.invicible`
+      break
+  }
+
+  return [code, javascript.Order.NONE]
+}
+
 javascript.javascriptGenerator.forBlock['spacecode_turnToward'] = function (
   block
 ) {
@@ -397,7 +446,17 @@ javascript.javascriptGenerator.forBlock['spacecode_now'] = function () {
   return [code, javascript.Order.NONE]
 }
 
-javascript.javascriptGenerator.forBlock['spacecode_now'] = function () {
-  const code = 'Date.now()'
+javascript.javascriptGenerator.forBlock['spacecode_modulo'] = function (block) {
+  const value = javascript.javascriptGenerator.valueToCode(
+    block,
+    'VALUE',
+    javascript.Order.ATOMIC
+  )
+  const modulo = javascript.javascriptGenerator.valueToCode(
+    block,
+    'MODULO',
+    javascript.Order.ATOMIC
+  )
+  const code = `${value}%${modulo}`
   return [code, javascript.Order.NONE]
 }

@@ -171,10 +171,7 @@ class Player extends GameObject {
         this.score += BONUS_SCORE
         break
       case BonusType.SHIELD:
-        this.invicible = true
-        setTimeout(() => {
-          this.invicible = false
-        }, PLAYER_INVICIBLE_DELAY)
+        this.activateShield()
         break
       case BonusType.RIFFLE:
         this.riffle = true
@@ -194,13 +191,17 @@ class Player extends GameObject {
     this.onBonusCollected()
   }
 
-  respawn = () => {
-    this.onInit()
-    this.alive = true
+  activateShield = () => {
     this.invicible = true
     setTimeout(() => {
       this.invicible = false
     }, PLAYER_INVICIBLE_DELAY)
+  }
+
+  respawn = () => {
+    this.onInit()
+    this.alive = true
+    this.activateShield()
   }
 
   canShoot() {

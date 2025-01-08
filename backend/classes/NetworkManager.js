@@ -14,6 +14,9 @@ class NetworkManager {
     app.get('/', (req, res) => {
       res.sendFile(__dirname + '/index.html')
     })
+    app.get('/arena/', (req, res) => {
+      res.sendFile(__dirname + '../arena.html')
+    })
 
     // Codelab
     app.use('/codelab', express.static('codelab'))

@@ -30,11 +30,7 @@ var toolbox = {
       contents: [
         { kind: 'block', type: 'spacecode_init' },
         { kind: 'block', type: 'spacecode_loop' },
-        { kind: 'block', type: 'spacecode_screen' },
-        {
-          kind: 'block',
-          type: 'spacecode_getAttribute'
-        },
+        { kind: 'block', type: 'spacecode_handler' },
         {
           kind: 'block',
           type: 'spacecode_setAttribute',
@@ -49,7 +45,11 @@ var toolbox = {
             }
           }
         },
-        { kind: 'block', type: 'spacecode_handler' },
+        { kind: 'block', type: 'spacecode_screen' },
+        {
+          kind: 'block',
+          type: 'spacecode_getAttribute'
+        },
         { kind: 'block', type: 'spacecode_now' }
       ]
     },
@@ -86,8 +86,7 @@ var toolbox = {
             }
           }
         },
-        { kind: 'block', type: 'spacecode_shoot' },
-        { kind: 'block', type: 'spacecode_scan' }
+        { kind: 'block', type: 'spacecode_shoot' }
       ]
     },
     {
@@ -95,6 +94,8 @@ var toolbox = {
       name: 'Logique',
       categorystyle: 'logic_category',
       contents: [
+        { kind: 'block', type: 'spacecode_scan' },
+        { kind: 'block', type: 'spacecode_state' },
         {
           kind: 'block',
           type: 'controls_if'
@@ -178,6 +179,28 @@ var toolbox = {
               }
             },
             TO: {
+              shadow: {
+                type: 'math_number',
+                fields: {
+                  NUM: 10
+                }
+              }
+            }
+          }
+        },
+        {
+          kind: 'block',
+          type: 'math_modulo',
+          inputs: {
+            DIVIDEND: {
+              shadow: {
+                type: 'math_number',
+                fields: {
+                  NUM: 5
+                }
+              }
+            },
+            DIVISOR: {
               shadow: {
                 type: 'math_number',
                 fields: {

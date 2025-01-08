@@ -146,6 +146,7 @@ class PlayerManager {
     }
     newPlayer.pendingRank = '-'
     backEndPlayers[newPlayer.id] = newPlayer
+    newPlayer.activateShield()
     PlayerManager.updateAllPlayers()
   }
 
