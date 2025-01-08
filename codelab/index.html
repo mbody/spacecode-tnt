@@ -35,6 +35,9 @@
           -->
         </div>
         <div class="btnGroup">
+          <a id="help-btn" class="btn" target="_blank" href="/docs/">
+            <span class="material-icons">question_mark</span>
+          </a>
           <button id="run-btn" class="btn">
             <span class="material-icons" id="run-btn-icon">play_arrow</span>
           </button>
@@ -67,16 +70,17 @@
               required
             />
 
-            <label><b>Téléphone</b></label>
+            <label><b>Téléphone</b></label
+            ><br />
+            <small>Pour pouvoir vous contacter en cas de victoire !</small>
             <input
               type="tel"
               id="phone"
               name="phone"
-              placeholder="Votre 06 (ou 07 ;-)"
+              placeholder="Votre 06 ou 07"
               pattern="[0-9]{10}"
               required
             />
-
             <label><b>Couleur de vaisseau</b></label
             ><br />
             <input type="color" id="color" name="color" value="#f6b73c" />

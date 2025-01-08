@@ -98,3 +98,8 @@ input {
   box-sizing: border-box;
   padding: 0 18px;
 }
+
+small {
+  color: gray;
+  font-size: 0.7em;
+}
