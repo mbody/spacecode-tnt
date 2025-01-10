@@ -33,6 +33,7 @@ EVENTS = {
 Blockly.common.defineBlocksWithJsonArray([
   {
     type: 'spacecode_turn',
+    helpUrl: '/docs/#/?id=tourner',
     tooltip: 'Faire tourner le vaisseau',
     message0: 'Tourner à %1 de %2 °',
     args0: [
@@ -58,6 +59,7 @@ Blockly.common.defineBlocksWithJsonArray([
   },
   {
     type: 'spacecode_move',
+    helpUrl: '/docs/#/?id=déplacer',
     tooltip: 'Avance ou recule le vaisseau',
     message0: 'Déplacer vers %1 de %2',
     args0: [
@@ -85,7 +87,7 @@ Blockly.common.defineBlocksWithJsonArray([
   {
     type: 'spacecode_init',
     tooltip: '',
-    helpUrl: '',
+    helpUrl: '/docs/#/?id=au-démarrage',
     message0: 'Au démarrage %1',
     args0: [
       {
@@ -98,7 +100,7 @@ Blockly.common.defineBlocksWithJsonArray([
   {
     type: 'spacecode_loop',
     tooltip: "S'exécute toutes les 100 ms environ",
-    helpUrl: '',
+    helpUrl: '/docs/#/?id=toujours',
     message0: 'Toujours %1',
     args0: [
       {
@@ -111,7 +113,7 @@ Blockly.common.defineBlocksWithJsonArray([
   {
     type: 'spacecode_handler',
     tooltip: "S'exécute si l'évènement se produit",
-    helpUrl: '',
+    helpUrl: '/docs/#/?id=lorsque-',
     message0: 'Lorsque %1 %2',
     args0: [
       {
@@ -134,7 +136,7 @@ Blockly.common.defineBlocksWithJsonArray([
   {
     type: 'spacecode_shoot',
     tooltip: '',
-    helpUrl: '',
+    helpUrl: '/docs/#/?id=shooter',
     message0: 'Shooter %1',
     args0: [
       {
@@ -149,7 +151,7 @@ Blockly.common.defineBlocksWithJsonArray([
   {
     type: 'spacecode_screen',
     tooltip: '',
-    helpUrl: '',
+    helpUrl: '/docs/#/?id=définir',
     message0: 'écran %1 %2',
     args0: [
       {
@@ -171,7 +173,7 @@ Blockly.common.defineBlocksWithJsonArray([
   {
     type: 'spacecode_orientTo',
     tooltip: '',
-    helpUrl: '',
+    helpUrl: '/docs/#/?id=tourner',
     message0: "S'orienter vers %1",
     args0: [
       {
@@ -187,7 +189,7 @@ Blockly.common.defineBlocksWithJsonArray([
   {
     type: 'spacecode_getAttribute',
     tooltip: "Valeur d'un attribut du vaisseau ",
-    helpUrl: '',
+    helpUrl: '/docs/#/?id=définir',
     message0: '%1 %2',
     args0: [
       {
@@ -210,7 +212,7 @@ Blockly.common.defineBlocksWithJsonArray([
   {
     type: 'spacecode_now',
     tooltip: '',
-    helpUrl: '',
+    helpUrl: '/docs/#/?id=',
     message0: 'maintenant (ms)',
     output: 'Number',
     colour: VALUE_COLOR
@@ -218,7 +220,7 @@ Blockly.common.defineBlocksWithJsonArray([
   {
     type: 'spacecode_setAttribute',
     tooltip: "Définir l'attribut du vasseau",
-    helpUrl: '',
+    helpUrl: '/docs/#/?id=définir',
     message0: 'Définir %1 à %2',
     args0: [
       {
@@ -244,7 +246,7 @@ Blockly.common.defineBlocksWithJsonArray([
   {
     type: 'spacecode_scan',
     tooltip: '',
-    helpUrl: '',
+    helpUrl: '/docs/#/?id=adversairebonus-détecté',
     message0: '%1 détecté',
     args0: [
       {
@@ -262,7 +264,7 @@ Blockly.common.defineBlocksWithJsonArray([
   {
     type: 'spacecode_state',
     tooltip: '',
-    helpUrl: '',
+    helpUrl: '/docs/#/?id=bouclierrafale-actif',
     message0: '%1 actif',
     args0: [
       {
