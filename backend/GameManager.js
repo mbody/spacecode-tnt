@@ -11,24 +11,31 @@ const { ProjectileManager } = require('./classes/ProjectileManager')
 const { PlayerManager } = require('./classes/PlayerManager')
 const { Player } = require('./classes/Player')
 const NetworkManager = require('./classes/NetworkManager')
-const { SCREEN } = require('./classes/Constants')
+const { SCREEN, TOURNAMENT_TIME_SECONDS } = require('./classes/Constants')
 const { BonusManager } = require('./classes/BonusManager')
 
 class GameManager {
   displayers = {}
+  isTournamentOver = false
 
   constructor() {
     NetworkManager.io.on('connection', this.onConnection)
     NetworkManager.registerPostEndpoint('/player', this.onNewBotPlayer)
     // backend ticker
-    setInterval(this.loop, 1000 / 30)
+    this.loopId = setInterval(this.loop, 1000 / 30)
     game.isTournament = process.env.MODE === 'TOURNAMENT'
+    game.endTournamentTS = Date.now() + TOURNAMENT_TIME_SECONDS * 1000
+    PlayerManager.restoreBackup()
     if (!game.isTournament) {
-      PlayerManager.restoreBackup()
       console.log('=========== TRAINING MODE ===========')
     } else {
+      setTimeout(this.endTournament, TOURNAMENT_TIME_SECONDS * 1000)
       console.log('=========== TOURNAMENT MODE ===========')
     }
+  }
+
+  endTournament = () => {
+    this.isTournamentOver = true
   }
 
   onConnection = (socket) => {
@@ -70,11 +77,16 @@ class GameManager {
       }
     }
     PlayerManager.updateAllPlayers()
+    if (this.isTournamentOver) {
+      this.gameOver()
+    }
   }
 
   initGameCallback(callback) {
     callback({
       ip: NetworkManager.getIpAddress(),
+      isTournament: game.isTournament,
+      endTournamentTS: game.endTournamentTS,
       ...SCREEN
     })
   }
@@ -93,7 +105,7 @@ class GameManager {
 
     // update players
     const hasPlayerAlive = PlayerManager.updatePlayers()
-    if (!hasPlayerAlive) {
+    if (!hasPlayerAlive || this.isTournamentOver) {
       this.gameOver()
     }
 
@@ -107,9 +119,7 @@ class GameManager {
   gameOver() {
     const winner = PlayerManager.getWinner()
     NetworkManager.io.emit('gameOver', winner)
-    EnemyManager.resetAllEnemies()
-    PlayerManager.resetAllPlayers()
-    BonusManager.resetAllBonuses()
+    clearInterval(this.loopId)
   }
 }
 

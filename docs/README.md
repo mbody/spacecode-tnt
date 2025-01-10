@@ -132,4 +132,4 @@ Vous pouvez les pamarétrer en utilisant la petite roue crantée bleue et ajoute
 
 ## Credits
 
-Projet de Mathurin BODY pour Makers Kids, basé sur les travaux de [Chris Courses - Online Multiplayer Game Tutorial](https://www.youtube.com/watch?v=Wcvqnx14cZA) et de [Spishewi synchronized shapes](https://github.com/Spishewi/makerskids-syncronized-shapes) !
+Projet de Mathurin BODY pour Makers Kids Montlouis, basé sur les travaux de [Chris Courses - Online Multiplayer Game Tutorial](https://www.youtube.com/watch?v=Wcvqnx14cZA) et de [Spishewi synchronized shapes](https://github.com/Spishewi/makerskids-syncronized-shapes) !

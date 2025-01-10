@@ -144,7 +144,7 @@ class PlayerManager {
       pendingPlayers.push(oldPlayer)
       delete backEndPlayers[oldestPlayerId]
     }
-    newPlayer.pendingRank = '-'
+    newPlayer.pendingRank = undefined
     backEndPlayers[newPlayer.id] = newPlayer
     newPlayer.activateShield()
     PlayerManager.updateAllPlayers()

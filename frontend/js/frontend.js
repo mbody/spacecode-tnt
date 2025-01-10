@@ -32,6 +32,14 @@ window.addEventListener(
   false
 )
 
+let isTournament = true
+const SORT_BY = {
+  QUEUE: 'QUEUE',
+  USERNAME: 'USERNAME',
+  SCORE: 'SCORE'
+}
+let sortBy = SORT_BY.SCORE
+
 function fullscreenify(canvas) {
   var style = canvas.getAttribute('style') || ''
 
@@ -82,6 +90,14 @@ socket.emit(
   (response) => {
     const serverUrl = document.querySelector('#serverUrl')
     serverUrl.innerHTML = response.ip
+    const countDown = document.querySelector('#countDown')
+    isTournament = response.isTournament
+    const countDownDate = response.endTournamentTS
+    if (isTournament) {
+      updateCountDown(countDown, countDownDate)
+    } else {
+      countDown.innerHTML = 'MODE ENTRAINEMENT'
+    }
   }
 )
 
@@ -245,15 +261,27 @@ socket.on('updatePlayers', (backEndPlayers) => {
 
 socket.on('updateAllPlayers', (allPlayers) => {
   const allPlayersTable = document.getElementById('allPlayersTable')
+  if (allPlayers.length > 0) {
+    allPlayers[0].isBest = true
+  }
+  if (isTournament || sortBy == SORT_BY.QUEUE) {
+    allPlayers.sort((a, b) =>
+      !a.pendingRank ? 1 : !b.pendingRank ? -1 : a.pendingRank - b.pendingRank
+    )
+  } else if (sortBy == SORT_BY.USERNAME) {
+    allPlayers.sort((a, b) => a.username - b.username)
+  }
   allPlayersTable.innerHTML = ''
   let index = 1
   for (const player of allPlayers) {
-    allPlayersTable.innerHTML += `<tr ${
-      index == 1 ? 'id="mvp"' : ''
-    } ><td>${index}</td><td>
-    ${player.username}
-    ${index == 1 ? '&#128081;' : ''} 
-    </td><td>${player.pendingRank || '-'}</td><td>${player.bestScore}</td></tr>`
+    allPlayersTable.innerHTML += `<tr ${player.isBest ? 'id="mvp"' : ''} ><td>${
+      isTournament ? '-' : index
+    }</td><td>
+      ${player.username}
+      ${player.isBest ? '&#128081;' : ''} 
+      </td><td>${player.pendingRank || '-'}</td><td>${
+      player.bestScore
+    }</td></tr>`
     index++
   }
 })
@@ -294,13 +322,32 @@ socket.on('gameOver', (winner) => {
   const gameoverBox = document.querySelector('#gameover')
   document.querySelector(
     '#gameoverMessage'
-  ).innerHTML = `GAME OVER !<br><br> <b>${winner.username}</b> wins with ${winner.score} points`
+  ).innerHTML = `FELICITATIONS à <b>${winner.username}</b> !!! `
   gameoverBox.style.display = 'flex'
-
-  setTimeout(() => {
-    gameoverBox.style.display = 'none'
-  }, 10000)
 })
+
+function updateCountDown(countDownDiv, countDownDate) {
+  const intervalId = setInterval(function () {
+    // Get today's date and time
+    var now = new Date().getTime()
+
+    // Find the distance between now and the count down date
+    var distance = countDownDate - now
+    // If the count down is finished, write some text
+    if (distance < 0) {
+      distance = 0
+      clearInterval(intervalId)
+    }
+
+    // Time calculations for days, hours, minutes and seconds
+    var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60))
+    var seconds = Math.floor((distance % (1000 * 60)) / 1000)
+    seconds = String(seconds).padStart(2, '0')
+
+    // Display the result in the element with id="demo"
+    countDownDiv.innerHTML = minutes + ':' + seconds + ''
+  }, 1000)
+}
 
 let animationId
 function animate() {

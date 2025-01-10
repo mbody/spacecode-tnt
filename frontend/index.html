@@ -84,10 +84,19 @@
       }
 
       #serverUrl {
+        display: none;
         position: absolute;
         bottom: 10;
         padding: 5 10;
         color: #7b7b7b;
+        text-align: center;
+      }
+      #countDown {
+        position: absolute;
+        bottom: 10;
+        padding: 5 10;
+        font-size: 30px;
+        color: #7b7b7b88;
         text-align: center;
       }
       .hidden {
@@ -109,7 +118,7 @@
         justify-content: center;
       }
       #gameover div {
-        background-color: #f44336;
+        background-color: #6aa427;
         padding: 30;
         font-size: 2em;
         border-radius: 10px;
@@ -138,6 +147,7 @@
       </table>
     </div>
     <div id="serverUrl">localhost</div>
+    <div id="countDown"></div>
 
     <!-- GAME OVER DIALOG -->
 

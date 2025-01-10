@@ -4,7 +4,8 @@ const backEndProjectiles = {}
 const backEndEnemies = {}
 const backEndBonuses = {}
 const game = {
-  isTournament: false
+  isTournament: false,
+  endTournamentTS: undefined
 }
 
 module.exports = {
