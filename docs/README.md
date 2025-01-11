@@ -12,15 +12,18 @@ Pour éliminer vos adveraires, vous pouvez shooter mais 1 fois toutes les 3 seco
 
 > Chaque kill vous rapporte 1 point.
 
+### Bonus
+
 Pour vous aider dans votre mission, des bonus peuvent être collectés :
 
-|                             |                                                                             |
-| --------------------------: | --------------------------------------------------------------------------- |
-|  ![icon](../img/shield.svg) | MGEN vous protège et active votre bouclier !                                |
-|    ![icon](../img/bomb.svg) | TNT tire des balles dans 8 directions !                                     |
-|   ![icon](../img/heart.svg) | Harmonie Mutuelle vous restaure une vie !                                   |
-| ![icon](../img/crystal.svg) | Ce cristal vous fait gagner 5 points... L'équivalent de 5 kills d'un coup ! |
-|  ![icon](../img/riffle.svg) | Mode rafale, vous pouvez tirer toutes les 100 ms !!                         |
+|                                   |                                                                             |
+| --------------------------------: | --------------------------------------------------------------------------- |
+|        ![icon](../img/shield.svg) | MGEN vous protège et active votre bouclier !                                |
+|          ![icon](../img/bomb.svg) | TNT tire des balles dans 16 directions !                                    |
+|         ![icon](../img/heart.svg) | Harmonie Mutuelle vous restaure une vie !                                   |
+|       ![icon](../img/crystal.svg) | Ce cristal vous fait gagner 5 points... L'équivalent de 5 kills d'un coup ! |
+|        ![icon](../img/riffle.svg) | Mode rafale, vous pouvez tirer toutes les 100 ms !                          |
+| ![icon](../img/triple-riffle.svg) | Mode rafalex3, vous pouvez tirer 3 balles toutes les 100 ms !!!             |
 
 Lorsque deux spacebots se rentrent dedans, ils perdent une vie... sauf si leur bouclier est activé !
 

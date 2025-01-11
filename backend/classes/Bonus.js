@@ -6,7 +6,8 @@ const BonusType = {
   HEART: 'HEART',
   SHIELD: 'SHIELD',
   BOMB: 'BOMB',
-  RIFFLE: 'RIFFLE'
+  RIFFLE: 'RIFFLE',
+  TIPLE_RIFFLE: 'TRIPLE_RIFFLE'
 }
 
 class Bonus extends GameObject {

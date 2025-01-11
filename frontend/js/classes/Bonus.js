@@ -23,6 +23,10 @@ class Bonus extends GameObject {
           this.sprite = GameObject.getMediaById('riffle')
           this.shadowColor = 'yellow'
           break
+        case 'TRIPLE_RIFFLE':
+          this.sprite = GameObject.getMediaById('triple-riffle')
+          this.shadowColor = 'yellow'
+          break
         default:
           this.sprite = GameObject.getMediaById('crystal')
           this.shadowColor = 'turquoise'

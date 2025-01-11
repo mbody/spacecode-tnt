@@ -173,9 +173,12 @@ class Player extends GameObject {
       case BonusType.SHIELD:
         this.activateShield()
         break
+      case BonusType.TIPLE_RIFFLE:
+        this.tripleRiffle = true
       case BonusType.RIFFLE:
         this.riffle = true
         setTimeout(() => {
+          this.tripleRiffle = false
           this.riffle = false
         }, BONUS_RIFFLE_DELAY)
         break
@@ -212,6 +215,16 @@ class Player extends GameObject {
   shoot() {
     if (!this.canShoot()) return
     ProjectileManager.createNewProjectile(this)
+    if (this.tripleRiffle) {
+      ProjectileManager.createNewProjectile({
+        ...this,
+        rotation: this.rotation - 5
+      })
+      ProjectileManager.createNewProjectile({
+        ...this,
+        rotation: this.rotation + 5
+      })
+    }
     // retropus from firing
     // this.moveBackward()
     this.lastShootTimestamp = Date.now()
@@ -237,7 +250,13 @@ class Player extends GameObject {
       const dy = sprite.y - this.y
       if (dx == 0 && dy == 0) continue
       const angleTo = 90 + (180 * Math.atan2(dy, dx)) / Math.PI
-      const da = Math.abs((this.rotation - angleTo) % 360)
+      //const da = Math.abs((this.rotation - angleTo) % 360)
+
+      // With view angle
+      const distance = Math.sqrt(dx * dx + dy * dy)
+      const viewAngle = Math.asin(sprite.radius / distance)
+      const da = Math.abs((this.rotation - angleTo) % 360) - viewAngle
+
       if (Math.abs(da) < PLAYER_SCAN_ANGLE) {
         return true
       }

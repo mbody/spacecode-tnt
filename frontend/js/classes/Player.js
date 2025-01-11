@@ -81,10 +81,15 @@ class Player extends GameObject {
         c.stroke()
       }
 
-      c.font = '12px sans-serif'
-      c.fillStyle = 'white'
+      c.font = '16px sans-serif'
+      c.fillStyle = this.isBest ? 'gold' : 'white'
       c.textAlign = 'center'
-      c.fillText(this.username, this.x, this.y + 35)
+      let username =
+        this.username.length > 10
+          ? this.username.substring(0, 7) + '...'
+          : this.username
+      if (this.isBest) username = '👑  ' + username
+      c.fillText(username, this.x, this.y + 40)
       c.save()
       c.shadowColor = this.color
       c.shadowBlur = this.invicible ? 40 : 20

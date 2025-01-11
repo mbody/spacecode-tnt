@@ -1,3 +1,5 @@
+let __DEV__ = false
+
 const canvas = document.querySelector('#gameboard')
 const c = canvas.getContext('2d')
 
@@ -33,7 +35,6 @@ window.addEventListener(
 )
 
 let isTournament = true
-let __DEV__ = false
 
 const SORT_BY = {
   QUEUE: 'QUEUE',
@@ -191,6 +192,7 @@ socket.on('updatePlayers', (backEndPlayers) => {
   activePlayers.sort((a, b) => b.score - a.score)
 
   activePlayers.forEach((player, index) => {
+    frontEndPlayers[player.id].isBest = index == 0
     let lives = ''
     for (let index = 0; index < NB_MAX_LIVES; index++) {
       if (index < player.lives) {
