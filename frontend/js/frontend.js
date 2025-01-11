@@ -33,7 +33,7 @@ window.addEventListener(
 )
 
 let isTournament = true
-let __DEV__ = true
+let __DEV__ = false
 
 const SORT_BY = {
   QUEUE: 'QUEUE',

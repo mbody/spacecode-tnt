@@ -239,11 +239,7 @@ class Player extends GameObject {
       const angleTo = 90 + (180 * Math.atan2(dy, dx)) / Math.PI
       const da = Math.abs((this.rotation - angleTo) % 360)
       if (Math.abs(da) < PLAYER_SCAN_ANGLE) {
-        const distance2 = dx * dx + dy * dy
-        if (distance2 < PLAYER_SCAN_DISTANCE) {
-          sprite instanceof Player && sprite.onDetected()
-          return true
-        }
+        return true
       }
     }
     return false
