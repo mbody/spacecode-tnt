@@ -26,7 +26,7 @@ const CONSTANTES = {
   ENEMY_RADIUS: 25, // has to match enemy.svg file size /2 !
   LEVEL_PROGRESS_PER_KILL: 0, //0.1,
   // BONUS
-  BONUS_PLAYER_RATIO: 4,
+  BONUS_PLAYER_RATIO: 0.5,
   BONUS_RADIUS: 30,
   BONUS_SPEED: 8,
   BONUS_SCORE: 5,

@@ -9,8 +9,9 @@ class GameObject {
     color = Utils.getRandomColor(),
     velocity
   }) {
-    this.x = x || (SCREEN.width - 2 * radius) * Math.random() + radius
-    this.y = y || (SCREEN.height - 2 * radius) * Math.random() + radius
+    const diam = 2 * radius
+    this.x = x || (SCREEN.width - 2 * diam) * Math.random() + diam
+    this.y = y || (SCREEN.height - 2 * diam) * Math.random() + diam
     this.radius = radius
     this.color = color
     this.velocity = velocity
@@ -41,9 +42,9 @@ class GameObject {
     }
   }
 
-  isHitBy(projectile) {
-    const distance = Math.hypot(projectile.x - this.x, projectile.y - this.y)
-    return distance < this.radius
+  isHitBy(o) {
+    const distance = Math.hypot(o.x - this.x, o.y - this.y)
+    return distance < this.radius + o.radius
   }
 }
 

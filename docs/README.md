@@ -1,4 +1,4 @@
-<h1>:rocket: SPACECODE</h1>
+<h1>&#128640; SPACECODE</h1>
 
 <center>Codez votre spacebot et conquérez... l'univers !</center>
 
@@ -6,7 +6,7 @@
 
 Votre spacebot évolue dans une arène dont il ne peut pas sortir avec des adversaires (8 spacebots max).
 
-Il dispose de trois vies :heart: :heart: :heart: et son objectif est de maximiser son score pour gagner :trophy:.
+Il dispose de trois vies &#129505; &#129505; &#129505; et son objectif est de maximiser son score pour gagner &#127942;.
 
 Pour éliminer vos adveraires, vous pouvez shooter mais 1 fois toutes les 3 secondes seulement... sauf en mode rafale.
 
@@ -38,7 +38,7 @@ L'interface présente les éléments suivants :
 
 Vous devez donc coder le comportement de votre spacebot dans l'espace de codage en utilisant les blocs à votre disposition et en les arrangeant les uns avec les autres.
 
-> :warning: Seuls les éléments compris dans des blocs verts seront pris en compte.
+> ⚠️ Seuls les éléments compris dans des blocs verts seront pris en compte.
 
 > Attention : Pour associer deux blocs, il faut utiliser la partie gauche du bloc utilisé et la faire glisser dans la cible souhaitée jusqu'à ce qu'elle se surligne :
 
@@ -90,7 +90,7 @@ Pour `rotation`, la valeur est exprimée en degré et l'orientation est définie
 
 Permet de faire avancer ou reculer le spacebot de l'incrément choisi (en nombre de pixels), éventuellement négatif.
 
-> :warning: Ce nombre sera borné entre -30 et 30.
+> ⚠️ Ce nombre sera borné entre -30 et 30.
 
 #### Tourner
 
@@ -98,7 +98,7 @@ Permet de faire avancer ou reculer le spacebot de l'incrément choisi (en nombre
 
 Permet de faire tourner le spacebot dans le sens et de l'incrément choisis (en degré), éventuellement négatif.
 
-> :warning: Ce nombre sera borné entre -20 et 20.
+> ⚠️ Ce nombre sera borné entre -20 et 20.
 
 #### Shooter
 

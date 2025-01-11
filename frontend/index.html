@@ -78,9 +78,14 @@
         color: rgba(255, 255, 255, 0.6);
       }
 
-      #mvp {
+      #mvp,
+      .mvp th {
         color: gold;
         font-weight: bold;
+      }
+      .mvp th::before {
+        content: ' 👑';
+        color: gold;
       }
 
       #serverUrl {
@@ -125,6 +130,13 @@
         font-weight: bold;
         text-align: center;
       }
+      td,
+      th {
+        max-width: 150px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
     </style>
   </head>
   <body style="display: flex; align-items: center; justify-content: center">
@@ -132,7 +144,7 @@
     <div id="leaderboard">
       <div id="leaderboardTitle">Actuellement en jeu</div>
       <table>
-        <tbody id="playerLabels"></tbody>
+        <tbody id="playersTable"></tbody>
       </table>
     </div>
     <div id="allPlayers">

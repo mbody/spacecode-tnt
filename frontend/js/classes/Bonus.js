@@ -29,12 +29,12 @@ class Bonus extends GameObject {
           break
       }
     }
-    /*    
-    c.beginPath()
-    c.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false)
-    c.fillStyle = 'turquoise'
-    c.fill()
-    */
+    if (__DEV__) {
+      c.beginPath()
+      c.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false)
+      c.fillStyle = 'turquoise'
+      c.fill()
+    }
     c.shadowColor = this.shadowColor
     c.shadowBlur = this.radius * 3
     c.drawImage(

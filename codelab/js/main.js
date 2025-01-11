@@ -272,6 +272,8 @@ function loadDemo(demoblocks) {
 function resetWorkspace() {
   loadDemo(DEMO_BASIC)
   localStorage.removeItem('profile')
+  phoneInput.value = null
+  usernameInput.value = null
   initProfile()
   saveCode()
 }

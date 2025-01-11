@@ -80,8 +80,20 @@ function validateAccount() {
   profile.username = usernameInput.value
   profile.phone = phoneInput.value
   saveProfile()
-  doSendCode()
-  hideLoginModal()
+  if (profile.username == null || profile.length < 1) {
+    Toaster.error('Un pseudo est requis !')
+  } else if (
+    profile.phone == null ||
+    profile.phone < 1 ||
+    profile.phone.substring(0, 1) != '0'
+  ) {
+    Toaster.error(
+      'Un numéro de tél valide est requis pour identifier votre vaisseau et vous appelez en cas de victoire !'
+    )
+  } else {
+    doSendCode()
+    hideLoginModal()
+  }
 }
 
 //// SEND BUTTON

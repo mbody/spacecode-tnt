@@ -33,6 +33,8 @@ window.addEventListener(
 )
 
 let isTournament = true
+let __DEV__ = true
+
 const SORT_BY = {
   QUEUE: 'QUEUE',
   USERNAME: 'USERNAME',
@@ -170,86 +172,43 @@ socket.on('updateBonuses', (backEndBonuses) => {
 
 socket.on('updatePlayers', (backEndPlayers) => {
   if (!document.hasFocus()) return
+  const table = document.getElementById('playersTable')
+  table.innerHTML = ''
+
+  const activePlayers = []
   for (const id in backEndPlayers) {
     const backEndPlayer = backEndPlayers[id]
-    const div = document.querySelector(`tr[data-id="${id}"]`)
 
-    if (!frontEndPlayers[id] || !div) {
+    if (!frontEndPlayers[id]) {
       frontEndPlayers[id] = new Player(backEndPlayer)
-
-      document.querySelector(
-        '#playerLabels'
-      ).innerHTML += `<tr onclick="copyToClipboard('${id}')" data-id="${id}" data-score="${backEndPlayer.score}"><td></th><td>${backEndPlayer.username}</th><td> ${backEndPlayer.score}</th></tr>`
     } else {
       frontEndPlayers[id].updateFromBackend(backEndPlayer)
+    }
 
-      let lives = ''
-      for (let index = 0; index < NB_MAX_LIVES; index++) {
-        if (index < backEndPlayer.lives) {
-          lives += `<span style="color: ${backEndPlayer.color}">	&#x2665;</span>`
-        } else {
-          lives += `<span style="color: black">	&#x2665;</span>`
-        }
-      }
-      div.innerHTML = `<th style="text-align: left"> ${backEndPlayer.username}</th><td style="padding:0 5px">${lives}</th><td>${backEndPlayer.score} </th>`
+    activePlayers.push(backEndPlayer)
+  }
 
-      div.setAttribute('data-score', backEndPlayer.score)
+  activePlayers.sort((a, b) => b.score - a.score)
 
-      // sorts the players divs
-      const parentDiv = document.querySelector('#playerLabels')
-      const childDivs = Array.from(parentDiv.querySelectorAll('tr'))
-
-      childDivs.sort((a, b) => {
-        const scoreA = Number(a.getAttribute('data-score'))
-        const scoreB = Number(b.getAttribute('data-score'))
-
-        return scoreB - scoreA
-      })
-
-      // removes old elements
-      childDivs.forEach((div) => {
-        parentDiv.removeChild(div)
-      })
-
-      // adds sorted elements
-      childDivs.forEach((div) => {
-        parentDiv.appendChild(div)
-      })
-
-      frontEndPlayers[id].target = {
-        x: backEndPlayer.x,
-        y: backEndPlayer.y,
-        rotation: backEndPlayer.rotation
-      }
-
-      if (!backEndPlayer.alive) {
-        frontEndPlayers[id].x = backEndPlayer.x
-        frontEndPlayers[id].y = backEndPlayer.y
-        frontEndPlayers[id].rotation = backEndPlayer.rotation
-      }
-
-      if (id === socket.id && backEndPlayer.alive) {
-        const lastBackendInputIndex = playerInputs.findIndex((input) => {
-          return backEndPlayer.sequenceNumber === input.sequenceNumber
-        })
-
-        if (lastBackendInputIndex > -1)
-          playerInputs.splice(0, lastBackendInputIndex + 1)
-
-        playerInputs.forEach((input) => {
-          frontEndPlayers[id].target.x += input.dx
-          frontEndPlayers[id].target.y += input.dy
-        })
+  activePlayers.forEach((player, index) => {
+    let lives = ''
+    for (let index = 0; index < NB_MAX_LIVES; index++) {
+      if (index < player.lives) {
+        lives += `<span style="color: ${player.color}">	&#x2665;</span>`
+      } else {
+        lives += `<span style="color: black">	&#x2665;</span>`
       }
     }
-  }
+    table.innerHTML += `<tr ${
+      index == 0 ? 'class="mvp"' : ''
+    }><th style="text-align: left" > ${
+      player.username
+    }</th><td style="padding:0 5px">${lives}</th><td>${player.score} </th></tr>`
+  })
 
   // this is where we delete frontend players
   for (const id in frontEndPlayers) {
     if (!backEndPlayers[id]) {
-      const divToDelete = document.querySelector(`tr[data-id="${id}"]`)
-      divToDelete.parentNode.removeChild(divToDelete)
-
       if (id === socket.id) {
         document.querySelector('#usernameForm').style.display = 'block'
       }
@@ -261,7 +220,7 @@ socket.on('updatePlayers', (backEndPlayers) => {
 
 socket.on('updateAllPlayers', (allPlayers) => {
   const allPlayersTable = document.getElementById('allPlayersTable')
-  if (allPlayers.length > 0) {
+  if (allPlayers.length > 0 && !isTournament) {
     allPlayers[0].isBest = true
   }
   if (isTournament || sortBy == SORT_BY.QUEUE) {

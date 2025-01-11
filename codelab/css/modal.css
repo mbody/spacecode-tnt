@@ -125,6 +125,11 @@ button#reset-btn {
   width: 300px;
 }
 
+.required:after {
+  content: ' *';
+  color: red;
+}
+
 /*style the close button*/
 .close {
   position: absolute;

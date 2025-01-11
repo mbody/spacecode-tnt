@@ -23,7 +23,17 @@ class Player extends GameObject {
     this.bestScore = bestScore
   }
 
-  updateFromBackend({ alive, invicible, color, lives, username, bestScore }) {
+  updateFromBackend({
+    alive,
+    invicible,
+    color,
+    lives,
+    username,
+    bestScore,
+    x,
+    y,
+    rotation
+  }) {
     this.alive = alive
     this.color = color
     this.originalColor = color
@@ -34,10 +44,32 @@ class Player extends GameObject {
     this.invicible = invicible
     this.username = username
     this.bestScore = bestScore
+    this.target = {
+      x,
+      y,
+      rotation
+    }
   }
 
   draw() {
     if (this.alive) {
+      if (__DEV__) {
+        c.beginPath()
+        c.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false)
+        c.fillStyle = 'turquoise'
+        c.fill()
+        c.closePath()
+
+        c.beginPath()
+        c.moveTo(this.x, this.y)
+        this.lineToTargetAngle(this.rotation - 90 - 5)
+        this.lineToTargetAngle(this.rotation - 90 + 5)
+        c.lineTo(this.x, this.y)
+        c.fillStyle = '#FFFFFF0C'
+        c.fill()
+        c.closePath()
+      }
+
       if (this.invicible) {
         const blink = Math.floor(Date.now() / 500.0) % 2 == 0
         this.color = blink ? 'white' : this.originalColor
@@ -59,6 +91,13 @@ class Player extends GameObject {
       this.drawBody()
       c.restore()
     }
+  }
+
+  lineToTargetAngle(angle) {
+    const h = 4000
+    const dx = h * Math.cos(Utils.degToRad(angle))
+    const dy = h * Math.sin(Utils.degToRad(angle))
+    c.lineTo(this.x + dx, this.y + dy)
   }
 
   drawBody() {
