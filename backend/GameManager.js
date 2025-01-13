@@ -11,7 +11,11 @@ const { ProjectileManager } = require('./classes/ProjectileManager')
 const { PlayerManager } = require('./classes/PlayerManager')
 const { Player } = require('./classes/Player')
 const NetworkManager = require('./classes/NetworkManager')
-const { SCREEN, TOURNAMENT_TIME_SECONDS } = require('./classes/Constants')
+const {
+  SCREEN,
+  TOURNAMENT_TIME_SECONDS,
+  MAX_CODE_LENGTH
+} = require('./classes/Constants')
 const { BonusManager } = require('./classes/BonusManager')
 
 class GameManager {
@@ -53,6 +57,10 @@ class GameManager {
     if (!game.isTournament) {
       const data = request.body
       const id = data.phoneNumber
+      if (data.code.length > MAX_CODE_LENGTH) {
+        response.status(400).send('Votre code est malheureusement trop long !')
+        return
+      }
       PlayerManager.createNewPlayer({
         id,
         ...data

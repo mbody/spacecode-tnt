@@ -47,7 +47,27 @@ Vous devez donc coder le comportement de votre spacebot dans l'espace de codage 
 
 ![max](./img/block-position.png)
 
-Il est également possible de dupliquer des blocs en
+> Il est également possible de dupliquer des blocs en faisant un appuis long (ou clic droit) sur le block à dupliquer.
+
+![max](./img/block-duplicate.png)
+
+## Mode Entrainement
+
+Dans le mode entrainement, les joueurs peuvent ajouter/modifier le code de leur spacebot autant qu'il le souhaite.
+Il sont automatiquement ajouté aux bots en jeu et pensant le bot le plus "ancien" dans le jeu en file d'attente.
+La file d'attente permet une rotation de tous les joueurs dès qu'un joueur perd sa dernière vie.
+
+Le classement des joueurs apparait sur la droite en fonction de leur meilleur score atteint au cours d'une manche.
+Cela n'indique néanmoins pas grand chose du résultat final, seulement peut-être le pourcentage de chance de gagner le tournoi !
+
+## Mode Tournoi
+
+Pour déterminer le grand vainqueur, nous lancerons le mode Tournoi qui se présente comme le mode Entrainement avec néanmoins comme différence :
+
+- Il n'est plus possible d'ajouter/modifier le code d'un bot
+- Un compteur de fin de tournoi est lancé et le meilleur joueur **encore en jeu** à la fin du temps est déclaré vainqueur !
+
+Peu importe votre niveau de code, vous avez donc toujours une chance de remporter le tournoi !
 
 ## Références des blocs
 

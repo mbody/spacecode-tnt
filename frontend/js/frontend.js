@@ -203,7 +203,9 @@ socket.on('updatePlayers', (backEndPlayers) => {
     }
     table.innerHTML += `<tr ${
       index == 0 ? 'class="mvp"' : ''
-    }><th style="text-align: left" > ${
+    } onclick="copyToClipboard('${
+      player.id
+    }')"><th style="text-align: left" > ${
       player.username
     }</th><td style="padding:0 5px">${lives}</th><td>${player.score} </th></tr>`
   })
