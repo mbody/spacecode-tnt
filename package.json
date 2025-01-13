@@ -13,7 +13,7 @@
   },
   "scripts": {
     "start": "nodemon app",
-    "training": "export MODE=TRAINING && npm start",
-    "tournament": "export MODE=TOURNAMENT && npm start"
+    "training": "cross-env MODE=TRAINING npm start",
+    "tournament": "cross-env MODE=TOURNAMENT npm start"
   }
 }

@@ -65,7 +65,7 @@ Cela n'indique néanmoins pas grand chose du résultat final, seulement peut-êt
 Pour déterminer le grand vainqueur, nous lancerons le mode Tournoi qui se présente comme le mode Entrainement avec néanmoins comme différence :
 
 - Il n'est plus possible d'ajouter/modifier le code d'un bot
-- Un compteur de fin de tournoi est lancé et le meilleur joueur **encore en jeu** à la fin du temps est déclaré vainqueur !
+- Un@@@@@@ compteur de fin de tournoi est lancé et le meilleur joueur **encore en jeu** à la fin du temps est déclaré vainqueur !
 
 Peu importe votre niveau de code, vous avez donc toujours une chance de remporter le tournoi !
 
