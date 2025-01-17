@@ -6,7 +6,8 @@ const {
   backEndPlayers,
   backEndProjectiles,
   backEndBonuses,
-  pendingPlayers
+  pendingPlayers,
+  game
 } = require('./SharedModel')
 const fs = require('fs')
 const bcrypt = require('bcrypt')
@@ -125,8 +126,9 @@ class PlayerManager {
       return
     }
 
+    const nbMaxPlayers = game.isDebug ? 3 : MAX_PLAYERS
     if (
-      Object.values(backEndPlayers).length >= MAX_PLAYERS &&
+      Object.values(backEndPlayers).length >= nbMaxPlayers &&
       !backEndPlayers[data.id]
     ) {
       // remove oldest players

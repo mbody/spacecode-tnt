@@ -101,6 +101,9 @@ socket.emit(
     } else {
       countDown.innerHTML = 'MODE ENTRAINEMENT'
     }
+    if (response.isDebug) {
+      __DEV__ = true
+    }
   }
 )
 
@@ -224,6 +227,7 @@ socket.on('updatePlayers', (backEndPlayers) => {
 
 socket.on('updateAllPlayers', (allPlayers) => {
   const allPlayersTable = document.getElementById('allPlayersTable')
+
   if (allPlayers.length > 0 && !isTournament) {
     allPlayers[0].isBest = true
   }
@@ -303,12 +307,24 @@ function updateCountDown(countDownDiv, countDownDate) {
     }
 
     // Time calculations for days, hours, minutes and seconds
+    var hours = Math.floor(
+      (distance % (1000 * 60 * 60 * 60)) / (1000 * 60 * 60)
+    )
     var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60))
     var seconds = Math.floor((distance % (1000 * 60)) / 1000)
-    seconds = String(seconds).padStart(2, '0')
+    let time = ''
+    if (hours > 0) {
+      minutes = String(minutes).padStart(2, '0')
+      time += hours + ':'
+    }
+    if (hours > 0 || minutes > 0) {
+      time += minutes + ':'
+      seconds = String(seconds).padStart(2, '0')
+    }
+    time += seconds
 
     // Display the result in the element with id="demo"
-    countDownDiv.innerHTML = minutes + ':' + seconds + ''
+    countDownDiv.innerHTML = time
   }, 1000)
 }
 

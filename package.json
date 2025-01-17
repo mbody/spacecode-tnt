@@ -14,6 +14,7 @@
   "scripts": {
     "start": "nodemon app",
     "training": "cross-env MODE=TRAINING npm start",
-    "tournament": "cross-env MODE=TOURNAMENT npm start"
+    "tournament": "cross-env MODE=TOURNAMENT npm start",
+    "debug": "cross-env MODE=DEBUG npm start"
   }
 }

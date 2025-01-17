@@ -28,6 +28,7 @@ class GameManager {
     // backend ticker
     this.loopId = setInterval(this.loop, 1000 / 30)
     game.isTournament = process.env.MODE === 'TOURNAMENT'
+    game.isDebug = process.env.MODE === 'DEBUG'
     game.endTournamentTS = Date.now() + TOURNAMENT_TIME_SECONDS * 1000
     PlayerManager.restoreBackup()
     if (!game.isTournament) {
@@ -95,6 +96,7 @@ class GameManager {
       ip: NetworkManager.getIpAddress(),
       isTournament: game.isTournament,
       endTournamentTS: game.endTournamentTS,
+      isDebug: game.isDebug,
       ...SCREEN
     })
   }

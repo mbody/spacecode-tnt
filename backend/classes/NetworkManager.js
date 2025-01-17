@@ -36,7 +36,7 @@ class NetworkManager {
     const http = require('http')
     const server = http.createServer(app)
     const { Server } = require('socket.io')
-    const port = 80
+    const port = process.env.MODE === 'DEBUG' ? 3000 : 80
 
     NetworkManager.io = new Server(server, {
       pingInterval: 2000,
