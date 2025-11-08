@@ -14,6 +14,8 @@ const bcrypt = require('bcrypt')
 const { MAX_PLAYERS } = require('./Constants')
 
 const SALT = '$2b$10$08PYpUzJf9VA4.YYlo65be.5lpuW665YyotJbk4AAAB!'
+
+const PLAYERS_BACKUP_FOLDER = './backups'
 const PLAYERS_BACKUP_FILE = '.players.json'
 const PLAYERS_BACKUP = {}
 
@@ -204,32 +206,57 @@ class PlayerManager {
 
   static saveBackup() {
     fs.writeFile(
-      PLAYERS_BACKUP_FILE,
+      `${PLAYERS_BACKUP_FOLDER}/${PLAYERS_BACKUP_FILE}`,
       JSON.stringify(PLAYERS_BACKUP),
       'utf8',
       () => {
-        console.log('.players.json updated !')
+        console.log(`${PLAYERS_BACKUP_FOLDER}/${PLAYERS_BACKUP_FILE} updated !`)
       }
     )
   }
 
+  static saveBackupSync() {
+    fs.writeFileSync(
+      `${PLAYERS_BACKUP_FOLDER}/${PLAYERS_BACKUP_FILE}`,
+      JSON.stringify(PLAYERS_BACKUP),
+      'utf8'
+    )
+    console.log('.players.json updated !')
+  }
+
   static restoreBackup() {
-    fs.readFile(PLAYERS_BACKUP_FILE, 'utf8', (err, data) => {
-      if (err) {
-        console.log('No saved players found !')
-      } else {
-        const backup = JSON.parse(data)
-        for (const [phone, playerData] of Object.entries(backup)) {
-          try {
-            PlayerManager.addPlayerToBattleground(playerData)
-            PLAYERS_BACKUP[phone] = playerData
-          } catch (e) {
-            console.log('Error while restoring player ' + phone)
-            console.error(e)
-          }
-        }
-      }
-    })
+    fs.readFile(
+        `${PLAYERS_BACKUP_FOLDER}/${PLAYERS_BACKUP_FILE}`,
+        'utf8',
+        (err, data) => {
+            if (err) {
+                console.log('No saved players found !')
+            } else {
+                const backup = JSON.parse(data)
+                for (const [phone, playerData] of Object.entries(backup)) {
+                try {
+                    PlayerManager.addPlayerToBattleground(playerData)
+                    PLAYERS_BACKUP[phone] = playerData
+                } catch (e) {
+                    console.log('Error while restoring player ' + phone)
+                    console.error(e)
+                }
+                }
+            }
+        })
+  }
+
+  static swapBackupAndClear() {
+    PlayerManager.saveBackupSync()
+
+    const currentTimestamp = Date.now()
+    const currentDate = new Date(currentTimestamp)
+    const currentIsoString = currentDate.toISOString()
+
+    fs.renameSync(`${PLAYERS_BACKUP_FOLDER}/${PLAYERS_BACKUP_FILE}`, `${PLAYERS_BACKUP_FOLDER}/${currentIsoString}${PLAYERS_BACKUP_FILE}`)
+
+    PLAYERS_BACKUP = {}
+    // TODO: clear pendingPlayers & backEndPlayers, and see if it doesn't break anything
   }
 
   static removePlayerFromPendingPlayer(playerId) {
