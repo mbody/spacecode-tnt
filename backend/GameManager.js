@@ -31,6 +31,7 @@ class GameManager {
     game.isDebug = process.env.MODE === 'DEBUG'
     game.endTournamentTS = Date.now() + TOURNAMENT_TIME_SECONDS * 1000
     PlayerManager.restoreBackup()
+    
     if (!game.isTournament) {
       console.log('=========== TRAINING MODE ===========')
     } else {

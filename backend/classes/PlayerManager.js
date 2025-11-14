@@ -16,8 +16,18 @@ const { MAX_PLAYERS } = require('./Constants')
 const SALT = '$2b$10$08PYpUzJf9VA4.YYlo65be.5lpuW665YyotJbk4AAAB!'
 
 const PLAYERS_BACKUP_FOLDER = './backups'
-const PLAYERS_BACKUP_FILE = '.players.json'
+const PLAYERS_BACKUP_FILE = '.players'
 const PLAYERS_BACKUP = {}
+
+const FULL_PLAYERS_BACKUP_PATH = `${PLAYERS_BACKUP_FOLDER}/${PLAYERS_BACKUP_FILE}.json`
+
+const getPlayersBackupPathWithTime = () => {
+  const currentTimestamp = Date.now()
+  const currentDate = new Date(currentTimestamp)
+  const currentIsoString = currentDate.toISOString()
+
+  return `${PLAYERS_BACKUP_FOLDER}/${PLAYERS_BACKUP_FILE}.${currentIsoString}.json`
+}
 
 class PlayerManager {
   static updatePlayers() {
@@ -206,27 +216,27 @@ class PlayerManager {
 
   static saveBackup() {
     fs.writeFile(
-      `${PLAYERS_BACKUP_FOLDER}/${PLAYERS_BACKUP_FILE}`,
+      FULL_PLAYERS_BACKUP_PATH,
       JSON.stringify(PLAYERS_BACKUP),
       'utf8',
       () => {
-        console.log(`${PLAYERS_BACKUP_FOLDER}/${PLAYERS_BACKUP_FILE} updated !`)
+        console.log(`${FULL_PLAYERS_BACKUP_PATH} has been updated !`)
       }
     )
   }
 
   static saveBackupSync() {
     fs.writeFileSync(
-      `${PLAYERS_BACKUP_FOLDER}/${PLAYERS_BACKUP_FILE}`,
+      FULL_PLAYERS_BACKUP_PATH,
       JSON.stringify(PLAYERS_BACKUP),
       'utf8'
     )
-    console.log('.players.json updated !')
+    console.log(`${FULL_PLAYERS_BACKUP_PATH} has been updated !`)
   }
 
   static restoreBackup() {
     fs.readFile(
-        `${PLAYERS_BACKUP_FOLDER}/${PLAYERS_BACKUP_FILE}`,
+        FULL_PLAYERS_BACKUP_PATH,
         'utf8',
         (err, data) => {
             if (err) {
@@ -246,17 +256,11 @@ class PlayerManager {
         })
   }
 
-  static swapBackupAndClear() {
+
+  static swapBackup() {
     PlayerManager.saveBackupSync()
-
-    const currentTimestamp = Date.now()
-    const currentDate = new Date(currentTimestamp)
-    const currentIsoString = currentDate.toISOString()
-
-    fs.renameSync(`${PLAYERS_BACKUP_FOLDER}/${PLAYERS_BACKUP_FILE}`, `${PLAYERS_BACKUP_FOLDER}/${currentIsoString}${PLAYERS_BACKUP_FILE}`)
-
-    PLAYERS_BACKUP = {}
-    // TODO: clear pendingPlayers & backEndPlayers, and see if it doesn't break anything
+    fs.renameSync(FULL_PLAYERS_BACKUP_PATH, getPlayersBackupPathWithTime())
+    PlayerManager.removeAllPlayers()
   }
 
   static removePlayerFromPendingPlayer(playerId) {
@@ -280,6 +284,23 @@ class PlayerManager {
     allPlayers.sort((a, b) => b.bestScore - a.bestScore)
 
     NetworkManager.emit('updateAllPlayers', allPlayers)
+  }
+
+  static removeAllPlayers(){
+    // clear the backup object
+    for(key of Object.keys(PLAYERS_BACKUP)){
+      delete PLAYERS_BACKUP[key]
+    }
+
+    // clear the backend players object
+    for(key of Object.keys(backEndPlayers)){
+      delete backEndPlayers[key]
+    }
+
+    // clear the pending players object
+    for(key of Object.keys(pendingPlayers)){
+      delete pendingPlayers[key]
+    }
   }
 }
 
