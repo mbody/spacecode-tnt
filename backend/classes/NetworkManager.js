@@ -1,8 +1,12 @@
 const express = require('express')
+var cookieParser = require('cookie-parser')
+
 const app = express()
 app.use(express.json())
+app.use(cookieParser())
 
 const { networkInterfaces } = require('os')
+const { adminController } = require('./Auth')
 
 class NetworkManager {
   static io
@@ -31,6 +35,8 @@ class NetworkManager {
     app.get('/play/', (req, res) => {
       res.sendFile(__dirname + '/play/index.html')
     })
+
+    app.get('/admin', adminController)
 
     // socket.io setup
     const http = require('http')

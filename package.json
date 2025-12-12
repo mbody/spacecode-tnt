@@ -4,8 +4,9 @@
   "author": "Mathurin (https://github.com/mbody)",
   "dependencies": {
     "bcrypt": "^5.1.1",
-    "express": "^4.21.2",
-    "gsap": "^3.12.5",
+    "cookie-parser": "^1.4.7",
+    "express": "^4.22.1",
+    "gsap": "^3.14.1",
     "socket.io": "^4.8.1"
   },
   "devDependencies": {
