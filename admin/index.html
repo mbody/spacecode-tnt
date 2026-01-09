@@ -4,8 +4,76 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <style>
+        h1{
+            color: red;
+            text-align: center;
+        }
+
+        #btn-list{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            margin: auto;
+            width: min(100%, 500px);
+        }
+
+        #btn-list > button{
+            margin: 10px;
+            padding: 10px;
+            width: 100%;
+
+            font-size: large;
+        }
+    </style>
 </head>
 <body>
-    AUTHENTICATED
+    <h1>ADMIN PANEL</h1>
+    <div id="btn-list">
+        <button onclick="disconnect();">disconnect</button>
+        <hr>
+        <button onclick="createBackup();">create backup</button>
+        <button onclick="clearPlayers();">clear players</button>
+    </div>
+    
+    <script>
+        function disconnect(){
+            cookieStore.getAll().then(cookies => {
+                cookies.forEach(cookie => {
+                    cookieStore.delete(cookie);
+                    console.log(cookie);
+                })
+            });
+
+            window.location.href = "/";
+        }
+
+        async function createBackup(){
+            const response = await fetch("/admin/backup", {
+                method: "POST",
+                credentials: "same-origin"
+            });
+
+            if(response.ok){
+                alert("backup created");
+            }else{
+                alert("error while creating backup");
+            }
+        }
+
+        async function clearPlayers(){
+            const response = await fetch("/admin/clear", {
+                method: "POST",
+                credentials: "same-origin"
+            });
+
+            if(response.ok){
+                alert("players cleared");
+            }else{
+                alert("error while clearing players");
+            }
+        }
+    </script>
 </body>
 </html>

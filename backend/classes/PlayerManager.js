@@ -260,7 +260,7 @@ class PlayerManager {
   static swapBackup() {
     PlayerManager.saveBackupSync()
     fs.renameSync(FULL_PLAYERS_BACKUP_PATH, getPlayersBackupPathWithTime())
-    PlayerManager.removeAllPlayers()
+    PlayerManager.saveBackupSync()
   }
 
   static removePlayerFromPendingPlayer(playerId) {

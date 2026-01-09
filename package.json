@@ -6,8 +6,8 @@
     "bcrypt": "^5.1.1",
     "cookie-parser": "^1.4.7",
     "express": "^4.22.1",
-    "gsap": "^3.14.1",
-    "socket.io": "^4.8.1"
+    "gsap": "^3.14.2",
+    "socket.io": "^4.8.3"
   },
   "devDependencies": {
     "nodemon": "3.1.7"

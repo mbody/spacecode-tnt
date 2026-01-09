@@ -6,7 +6,6 @@ app.use(express.json())
 app.use(cookieParser())
 
 const { networkInterfaces } = require('os')
-const { adminController } = require('./Auth')
 
 class NetworkManager {
   static io
@@ -36,7 +35,12 @@ class NetworkManager {
       res.sendFile(__dirname + '/play/index.html')
     })
 
-    app.get('/admin', adminController)
+    // j'importe ici pour éviter les imports circulaires, c'est pas beau, mais j'ai pas envie de réfléchir sur une autre solution
+    const { adminController, adminBackupController, adminClearController } = require('./Admin')
+
+    app.get('/admin/', adminController)
+    app.post('/admin/backup/', adminBackupController)
+    app.post('/admin/clear/', adminClearController)
 
     // socket.io setup
     const http = require('http')
